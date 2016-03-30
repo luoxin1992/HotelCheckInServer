@@ -84,4 +84,15 @@ public class StaffDaoImpl extends BaseDaoImpl implements IStaffDao {
 		return null;
 	}
 
+	@Override
+	public Staff retrieveStaffByCardId(String cardId) {
+		try {
+			return super.querySingleRow(Staff.class,
+					"SELECT * FROM tbl_staff WHERE no = ? AND deleted = 0", cardId);
+		} catch (SQLException e) {
+			logger.error("error while doing database operation.", e);
+		}
+		return null;
+	}
+
 }

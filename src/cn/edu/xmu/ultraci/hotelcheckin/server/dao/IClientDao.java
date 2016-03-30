@@ -50,4 +50,12 @@ public interface IClientDao extends IBaseDao {
 	 * @return 查询结果
 	 */
 	public Client retrieveClientById(int id);
+
+	/**
+	 * 根据客户端标识查询客户端信息
+	 * 
+	 * @param device 客户端标识
+	 * @return 查询结果
+	 */
+	public Client retrieveClientByDevice(String device);
 }

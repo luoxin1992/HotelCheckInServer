@@ -16,7 +16,7 @@ public class Log implements Serializable {
 	// 时间戳
 	private String time;
 	// 类型
-	private Integer type;
+	private String device;
 	// 内容
 	private String content;
 
@@ -36,12 +36,12 @@ public class Log implements Serializable {
 		this.time = time;
 	}
 
-	public Integer getType() {
-		return type;
+	public String getDevice() {
+		return device;
 	}
 
-	public void setType(Integer type) {
-		this.type = type;
+	public void setDevice(String device) {
+		this.device = device;
 	}
 
 	public String getContent() {
@@ -79,7 +79,8 @@ public class Log implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Log [id=" + id + ", time=" + time + ", type=" + type + ", content=" + content + "]";
+		return "Log [id=" + id + ", time=" + time + ", device=" + device + ", content=" + content
+				+ "]";
 	}
 
 }

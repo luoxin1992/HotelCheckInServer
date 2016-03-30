@@ -22,9 +22,8 @@ public class ClientDaoImpl extends BaseDaoImpl implements IClientDao {
 	@Override
 	public boolean createClient(Client model) {
 		try {
-			if (super.executeUpdate(
-					"INSERT INTO tbl_client(device, online, heartbeat) VALUES(?, ?, ?)",
-					model.getDevice(), model.getOnline(), model.getHeartbeat()) > 0) {
+			if (super.executeUpdate("INSERT INTO tbl_client(device, heartbeat) VALUES(?, ?, ?)",
+					model.getDevice(), model.getHeartbeat()) > 0) {
 				return true;
 			}
 		} catch (SQLException e) {
@@ -37,9 +36,8 @@ public class ClientDaoImpl extends BaseDaoImpl implements IClientDao {
 	public boolean updateClient(Client model) {
 		try {
 			if (super.executeUpdate(
-					"UPDATE tbl_client SET device = ?, online = ?, heartbeat = ? WHERE id = ? AND deleted = 0",
-					model.getDevice(), model.getOnline(), model.getHeartbeat(),
-					model.getId()) > 0) {
+					"UPDATE tbl_client SET device = ?, heartbeat = ? WHERE id = ? AND deleted = 0",
+					model.getDevice(), model.getHeartbeat(), model.getId()) > 0) {
 				return true;
 			}
 		} catch (SQLException e) {
@@ -77,6 +75,17 @@ public class ClientDaoImpl extends BaseDaoImpl implements IClientDao {
 		try {
 			return super.querySingleRow(Client.class,
 					"SELECT * FROM tbl_client WHERE id = ? AND deleted = 0", id);
+		} catch (SQLException e) {
+			logger.error("error while doing database operation.", e);
+		}
+		return null;
+	}
+
+	@Override
+	public Client retrieveClientByDevice(String device) {
+		try {
+			return super.querySingleRow(Client.class,
+					"SELECT * FROM tbl_client WHERE device = ? AND deleted = 0", device);
 		} catch (SQLException e) {
 			logger.error("error while doing database operation.", e);
 		}

@@ -16,8 +16,6 @@ public class Client implements Serializable {
 	private Integer id;
 	// 客户端标识
 	private String device;
-	// 在线标记
-	private Integer online;
 	// 上次心跳
 	private String heartbeat;
 
@@ -35,14 +33,6 @@ public class Client implements Serializable {
 
 	public void setDevice(String device) {
 		this.device = device;
-	}
-
-	public Integer getOnline() {
-		return online;
-	}
-
-	public void setOnline(Integer online) {
-		this.online = online;
 	}
 
 	public String getHeartbeat() {
@@ -80,8 +70,7 @@ public class Client implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Client [id=" + id + ", device=" + device + ", online=" + online + ", heartbeat="
-				+ heartbeat + "]";
+		return "Client [id=" + id + ", device=" + device + ", heartbeat=" + heartbeat + "]";
 	}
 
 }

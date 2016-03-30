@@ -50,4 +50,12 @@ public interface IStaffDao extends IBaseDao {
 	 * @return 查询结果
 	 */
 	public Staff retrieveStaffById(int id);
+
+	/**
+	 * 根据员工卡号查询员工信息
+	 * 
+	 * @param cardId 要查询的员工卡号
+	 * @return 查询结果
+	 */
+	public Staff retrieveStaffByCardId(String cardId);
 }

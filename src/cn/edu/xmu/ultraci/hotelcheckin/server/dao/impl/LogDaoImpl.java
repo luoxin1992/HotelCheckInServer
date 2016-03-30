@@ -22,8 +22,8 @@ public class LogDaoImpl extends BaseDaoImpl implements ILogDao {
 	@Override
 	public boolean createLog(Log model) {
 		try {
-			if (super.executeUpdate("INSERT INTO tbl_log(time, type, content) VALUES(?, ?, ?)",
-					model.getTime(), model.getType(), model.getContent()) > 0) {
+			if (super.executeUpdate("INSERT INTO tbl_log(time, device, content) VALUES(?, ?, ?)",
+					model.getTime(), model.getDevice(), model.getContent()) > 0) {
 				return true;
 			}
 		} catch (SQLException e) {
