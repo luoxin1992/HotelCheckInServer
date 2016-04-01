@@ -1,19 +1,50 @@
 package cn.edu.xmu.ultraci.hotelcheckin.server.service;
 
+import java.util.Map;
+
+import cn.edu.xmu.ultraci.hotelcheckin.server.dto.CheckinDTO;
+import cn.edu.xmu.ultraci.hotelcheckin.server.dto.CheckoutDTO;
+import cn.edu.xmu.ultraci.hotelcheckin.server.dto.GuestDTO;
+
 /**
  * 房务类服务接口<br>
- * 包括：上报散客信息、选房、退房和支付结果查询
  * 
  * @author LuoXin
  *
  */
 public interface IRoomService {
 
-	public void doGuest();
+	/**
+	 * 上报散客信息
+	 * 
+	 * @param params 参数集
+	 * @return 处理结果
+	 */
+	public GuestDTO newGuest(Map<String, String> params);
 
-	public void doCheckin();
+	/**
+	 * 办理入住手续
+	 * 
+	 * @param params 参数集
+	 * @return 处理结果
+	 */
+	public CheckinDTO checkIn(Map<String, String> params);
 
-	public void doCheckout();
+	/**
+	 * 办理退房手续
+	 * 
+	 * @param params 参数集
+	 * @return 处理结果
+	 */
+	public CheckoutDTO checkOut(Map<String, String> params);
 
-	public void doPay();
+	/**
+	 * 查询支付结果<br>
+	 * 待第三方支付接口调通后实现
+	 * 
+	 * @param params 参数集
+	 * @return 处理结果
+	 */
+	@Deprecated
+	public void pay(Map<String, String> params);
 }

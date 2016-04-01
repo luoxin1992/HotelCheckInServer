@@ -21,12 +21,13 @@ public class StatusDTO extends BaseDTO implements Serializable {
 		this.statuses = statuses;
 	}
 
-	public void addStatus(Integer id, String name, Integer floor, Integer type) {
+	public void addStatus(Integer id, String name, Integer floor, Integer type, Integer available) {
 		Status status = new Status();
 		status.setId(id);
 		status.setName(name);
 		status.setFloor(floor);
 		status.setType(type);
+		status.setAvailable(available);
 		getStatuses().add(status);
 	}
 
@@ -37,6 +38,7 @@ public class StatusDTO extends BaseDTO implements Serializable {
 		private String name;
 		private Integer floor;
 		private Integer type;
+		private Integer available;
 
 		public Integer getId() {
 			return id;
@@ -68,6 +70,14 @@ public class StatusDTO extends BaseDTO implements Serializable {
 
 		public void setType(Integer type) {
 			this.type = type;
+		}
+
+		public Integer getAvailable() {
+			return available;
+		}
+
+		public void setAvailable(Integer available) {
+			this.available = available;
 		}
 	}
 

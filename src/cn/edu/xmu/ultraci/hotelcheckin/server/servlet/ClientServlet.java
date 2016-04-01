@@ -15,8 +15,8 @@ import org.apache.logging.log4j.Logger;
 
 import cn.edu.xmu.ultraci.hotelcheckin.server.constant.Action;
 import cn.edu.xmu.ultraci.hotelcheckin.server.constant.ErrorCode;
+import cn.edu.xmu.ultraci.hotelcheckin.server.constant.LogTemplate;
 import cn.edu.xmu.ultraci.hotelcheckin.server.dto.BaseDTO;
-import cn.edu.xmu.ultraci.hotelcheckin.server.dto.HeartbeatDTO;
 import cn.edu.xmu.ultraci.hotelcheckin.server.factory.BaseFactory;
 import cn.edu.xmu.ultraci.hotelcheckin.server.service.IAuthService;
 import cn.edu.xmu.ultraci.hotelcheckin.server.service.IConfService;
@@ -24,6 +24,7 @@ import cn.edu.xmu.ultraci.hotelcheckin.server.service.IQueryService;
 import cn.edu.xmu.ultraci.hotelcheckin.server.service.IRoomService;
 import cn.edu.xmu.ultraci.hotelcheckin.server.service.ISystemService;
 import cn.edu.xmu.ultraci.hotelcheckin.server.util.ParamUtil;
+import cn.edu.xmu.ultraci.hotelcheckin.server.util.StringUtil;
 import net.sf.json.JSONObject;
 
 /**
@@ -57,7 +58,7 @@ public class ClientServlet extends HttpServlet {
 
 		// 将服务端实际目录写入配置文件中
 		confServ.setConf("root", getServletContext().getRealPath("/"));
-		logger.info("real path of server is " + confServ.getConf("root"));
+		logger.info(String.format(LogTemplate.ROOT_PATH, confServ.getConf("root")));
 	}
 
 	@Override
@@ -81,7 +82,7 @@ public class ClientServlet extends HttpServlet {
 			}
 		} else {
 			// 鉴权失败
-			logger.warn("authentication failure, invalid request from " + request.getRemoteAddr());
+			logger.warn(String.format(LogTemplate.AUTH_FAIL, request.getRemoteAddr()));
 			try (PrintWriter pr = response.getWriter()) {
 				pr.write(JSONObject.fromObject(new BaseDTO(ErrorCode.AUTH_FAIL)).toString());
 				pr.flush();
@@ -97,41 +98,43 @@ public class ClientServlet extends HttpServlet {
 	 * @return 业务逻辑处理结果
 	 */
 	private BaseDTO parseRequest(Map<String, String> params) {
-		switch (params.get("action")) {
-		case Action.HEARTBEAT:
-			return systemServ.heartbeat(params);
-		case Action.INIT:
-			return systemServ.init(params);
-		case Action.LOGIN:
-			break;
-		case Action.LOGOUT:
-			break;
-		case Action.SMS:
-			break;
-		case Action.QUERY_MEMBER:
-			break;
-		case Action.QUERY_TYPE:
-			break;
-		case Action.QUERY_FLOOR:
-			break;
-		case Action.QUERY_STATUS:
-			break;
-		case Action.QUERY_ROOM:
-			break;
-		case Action.QUERY_INFO:
-			break;
-		case Action.NEW_GUEST:
-			break;
-		case Action.CHECK_IN:
-			break;
-		case Action.CHECK_OUT:
-			break;
-		case Action.PAY_RESULT:
-			break;
-		default:
-			return new BaseDTO(ErrorCode.INVALID_REQ);
+		String action = params.get("action");
+		if (!StringUtil.isBlank(action)) {
+			switch (action) {
+			case Action.HEARTBEAT:
+				return systemServ.heartbeat(params);
+			case Action.INIT:
+				return systemServ.init(params);
+			case Action.LOGIN:
+				return systemServ.login(params);
+			case Action.LOGOUT:
+				return systemServ.logout(params);
+			// case Action.SMS:
+			// break;
+			case Action.QUERY_MEMBER:
+				return queryServ.queryMember(params);
+			case Action.QUERY_TYPE:
+				return queryServ.queryType(params);
+			case Action.QUERY_FLOOR:
+				return queryServ.queryFloor(params);
+			case Action.QUERY_STATUS:
+				return queryServ.queryStatus(params);
+			case Action.QUERY_ROOM:
+				return queryServ.queryRoom(params);
+			case Action.QUERY_INFO:
+				return queryServ.queryInfo(params);
+			case Action.NEW_GUEST:
+				return roomServ.newGuest(params);
+			case Action.CHECK_IN:
+				return roomServ.checkIn(params);
+			case Action.CHECK_OUT:
+				return roomServ.checkOut(params);
+			// case Action.PAY_RESULT:
+			// break;
+			}
 		}
-		return null;
+		logger.warn(String.format(LogTemplate.INVALID_REQ, params));
+		return new BaseDTO(ErrorCode.INVALID_REQ);
 	}
 
 	/**

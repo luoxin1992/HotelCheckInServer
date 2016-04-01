@@ -64,8 +64,8 @@ public class CheckinDaoImpl extends BaseDaoImpl implements ICheckinDao {
 	@Override
 	public List<CheckinPO> retrieveAllCheckin() {
 		try {
-			return super.queryMultiRow(CheckinPO.class, "SELECT * FROM tbl_checkin WHERE deleted = 0",
-					(Object[]) null);
+			return super.queryMultiRow(CheckinPO.class,
+					"SELECT * FROM tbl_checkin WHERE deleted = 0", (Object[]) null);
 		} catch (SQLException e) {
 			logger.error(LogTemplate.SQL_EXCP, e);
 		}
@@ -77,6 +77,28 @@ public class CheckinDaoImpl extends BaseDaoImpl implements ICheckinDao {
 		try {
 			return super.querySingleRow(CheckinPO.class,
 					"SELECT * FROM tbl_checkin WHERE id = ? AND deleted = 0", id);
+		} catch (SQLException e) {
+			logger.error(LogTemplate.SQL_EXCP, e);
+		}
+		return null;
+	}
+
+	@Override
+	public CheckinPO retrieveCheckinByRoom(int room) {
+		try {
+			return super.querySingleRow(CheckinPO.class,
+					"SELECT * FROM tbl_checkin WHERE room = ? AND stay = 1 AND deleted = 0", room);
+		} catch (SQLException e) {
+			logger.error(LogTemplate.SQL_EXCP, e);
+		}
+		return null;
+	}
+
+	@Override
+	public List<Object> retrieveAllCheckinIdWithStayFlag() {
+		try {
+			return super.queryMultiColumn(
+					"SELECT id FROM tbl_checkin WHERE stay = 1 AND deleted = 0", (Object[]) null);
 		} catch (SQLException e) {
 			logger.error(LogTemplate.SQL_EXCP, e);
 		}

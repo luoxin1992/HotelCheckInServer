@@ -52,9 +52,9 @@ public interface IMemberDao extends IBaseDao {
 	public MemberPO retrieveMemberById(int id);
 
 	/**
-	 * 根据会员卡ID查询会员信息
+	 * 根据会员卡号查询会员信息
 	 * 
-	 * @param cardid 要查询的会员卡ID
+	 * @param cardid 要查询的会员卡号
 	 * @return 查询结果
 	 */
 	public MemberPO retrieveMemberByCardId(String cardId);

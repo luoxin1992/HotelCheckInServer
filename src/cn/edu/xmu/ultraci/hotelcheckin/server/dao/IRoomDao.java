@@ -50,4 +50,12 @@ public interface IRoomDao extends IBaseDao {
 	 * @return 查询结果
 	 */
 	public RoomPO retrieveRoomById(int id);
+
+	/**
+	 * 根据房卡号查询房间信息
+	 * 
+	 * @param cardId 要查询的房卡号
+	 * @return 查询结果
+	 */
+	public RoomPO retrieveRoomByCardId(String cardId);
 }

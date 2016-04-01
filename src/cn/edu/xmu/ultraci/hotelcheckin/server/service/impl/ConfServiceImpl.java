@@ -7,6 +7,7 @@ import java.util.Properties;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import cn.edu.xmu.ultraci.hotelcheckin.server.constant.LogTemplate;
 import cn.edu.xmu.ultraci.hotelcheckin.server.factory.BaseFactory;
 import cn.edu.xmu.ultraci.hotelcheckin.server.service.IConfService;
 
@@ -20,7 +21,7 @@ public class ConfServiceImpl implements IConfService {
 				BaseFactory.class.getClassLoader().getResource("config.properties").getPath())) {
 			prop.load(fr);
 		} catch (IOException e) {
-			logger.error("error while loading configuration file.", e);
+			logger.error(String.format(LogTemplate.IO_EXCP_PROP, "config.properties"), e);
 		}
 	}
 

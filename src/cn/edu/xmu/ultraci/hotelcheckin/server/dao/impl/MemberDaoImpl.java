@@ -87,7 +87,7 @@ public class MemberDaoImpl extends BaseDaoImpl implements IMemberDao {
 	public MemberPO retrieveMemberByCardId(String cardId) {
 		try {
 			return super.querySingleRow(MemberPO.class,
-					"SELECT * FROM tbl_member WHERE cardid = ? AND deleted = 0", cardId);
+					"SELECT * FROM tbl_member WHERE no = ? AND deleted = 0", cardId);
 		} catch (SQLException e) {
 			logger.error(LogTemplate.SQL_EXCP, e);
 		}

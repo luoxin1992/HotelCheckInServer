@@ -39,7 +39,7 @@ public interface ICheckinDao extends IBaseDao {
 	/**
 	 * 查询所有住宿信息
 	 * 
-	 * @return
+	 * @return 查询结果
 	 */
 	public List<CheckinPO> retrieveAllCheckin();
 
@@ -47,7 +47,23 @@ public interface ICheckinDao extends IBaseDao {
 	 * 根据ID查询住宿信息
 	 * 
 	 * @param id 要查询的ID
-	 * @return
+	 * @return 查询结果
 	 */
 	public CheckinPO retrieveCheckinById(int id);
+
+	/**
+	 * 根据房间ID查询住宿信息<br>
+	 * 仅查询当前处于入住状态的房间
+	 * 
+	 * @param room 要查询的房间ID
+	 * @return 查询结果
+	 */
+	public CheckinPO retrieveCheckinByRoom(int room);
+
+	/**
+	 * 查询当前所有处于入住状态的房间的ID
+	 * 
+	 * @return 查询结果
+	 */
+	public List<Object> retrieveAllCheckinIdWithStayFlag();
 }

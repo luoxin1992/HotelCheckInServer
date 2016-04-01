@@ -11,7 +11,6 @@ import cn.edu.xmu.ultraci.hotelcheckin.server.dto.TypeDTO;
 
 /**
  * 查询类服务接口<br>
- * 包括：查询会员、房型、楼层、房态和房间信息，以及酒店综合信息
  * 
  * @author LuoXin
  *

@@ -118,11 +118,11 @@ public class SystemServiceImpl implements ISystemService {
 					return model;
 				} else {
 					logger.warn(String.format(LogTemplate.LOGIN_NO_PREMISSION, device, cardid));
-					return (LoginDTO) new BaseDTO(ErrorCode.LOGIN_OUT_FAIL_NO_PREMISSION);
+					return (LoginDTO) new BaseDTO(ErrorCode.LOGIN_OUT_NO_PREMISSION);
 				}
 			} else {
 				logger.warn(String.format(LogTemplate.LOGIN_NO_SUCH_CARD, device, cardid));
-				return (LoginDTO) new BaseDTO(ErrorCode.LOGIN_OUT_FAIL_NO_SUCH_CARD);
+				return (LoginDTO) new BaseDTO(ErrorCode.LOGIN_OUT_NO_SUCH_CARD);
 			}
 		} else {
 			logger.warn(String.format(LogTemplate.INVALID_REQ, params));
@@ -145,11 +145,11 @@ public class SystemServiceImpl implements ISystemService {
 					return logout;
 				} else {
 					logger.warn(String.format(LogTemplate.LOGOUT_NO_PREMISSION, device, cardid));
-					return (LogoutDTO) new BaseDTO(ErrorCode.LOGIN_OUT_FAIL_NO_PREMISSION);
+					return (LogoutDTO) new BaseDTO(ErrorCode.LOGIN_OUT_NO_PREMISSION);
 				}
 			} else {
 				logger.warn(String.format(LogTemplate.LOGOUT_NO_SUCH_CARD, device, cardid));
-				return (LogoutDTO) new BaseDTO(ErrorCode.LOGIN_OUT_FAIL_NO_SUCH_CARD);
+				return (LogoutDTO) new BaseDTO(ErrorCode.LOGIN_OUT_NO_SUCH_CARD);
 			}
 		} else {
 			logger.warn(String.format(LogTemplate.INVALID_REQ, params));

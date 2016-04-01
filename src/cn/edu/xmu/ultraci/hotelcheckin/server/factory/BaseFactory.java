@@ -9,6 +9,7 @@ import java.util.Properties;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import cn.edu.xmu.ultraci.hotelcheckin.server.constant.LogTemplate;
 import cn.edu.xmu.ultraci.hotelcheckin.server.util.StringUtil;
 
 /**
@@ -34,7 +35,7 @@ public class BaseFactory {
 				BaseFactory.class.getClassLoader().getResource("factory.properties").getPath())) {
 			prop.load(fr);
 		} catch (IOException e) {
-			logger.error("error while loading factory configuration file.", e);
+			logger.error(String.format(LogTemplate.IO_EXCP_PROP, "factory.properties"), e);
 		}
 	}
 
@@ -45,16 +46,15 @@ public class BaseFactory {
 				try {
 					Object implInst = Class.forName(implName).newInstance();
 					map.put(implName, implInst);
-					logger.info("instantiation a object for class " + implName);
+					logger.info(String.format(LogTemplate.INSTANT, implName));
 				} catch (InstantiationException | IllegalAccessException
 						| ClassNotFoundException e) {
-					logger.error("error while instancing a object for class " + implName, e);
+					logger.error(String.format(LogTemplate.INST_EXCP, implName), e);
 				}
 			}
 			return map.get(implName);
 		} else {
-			logger.warn("implementation class of " + clazz.getSimpleName()
-					+ " not found in factory.properties");
+			logger.warn(String.format(LogTemplate.INST_NOT_MAP, clazz.getSimpleName()));
 		}
 		return null;
 	}

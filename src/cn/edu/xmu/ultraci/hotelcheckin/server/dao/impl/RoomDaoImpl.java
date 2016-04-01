@@ -83,4 +83,15 @@ public class RoomDaoImpl extends BaseDaoImpl implements IRoomDao {
 		return null;
 	}
 
+	@Override
+	public RoomPO retrieveRoomByCardId(String cardId) {
+		try {
+			return super.querySingleRow(RoomPO.class,
+					"SELECT * FROM tbl_room WHERE no = ? AND deleted = 0", cardId);
+		} catch (SQLException e) {
+			logger.error(LogTemplate.SQL_EXCP, e);
+		}
+		return null;
+	}
+
 }

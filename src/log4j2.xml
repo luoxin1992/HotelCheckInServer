@@ -3,12 +3,14 @@
 <configuration>
 	<appenders>
 		<Console name="Console" target="SYSTEM_OUT">
-			<ThresholdFilter level="warn" onMatch="accept"
-				onMismatch="deny" />
+			<!-- <ThresholdFilter level="warn" onMatch="accept" onMismatch="deny" 
+				/> -->
 			<PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
 		</Console>
-		<RollingFile name="RollingFile" fileName="${catalina.home}/logs/HotelCheckInServer.log"
-			filePattern="${catalina.home}/logs/HotelCheckInServer-%d{yyyy-MM-dd}.log" append="true">
+		<RollingFile name="RollingFile"
+			fileName="${catalina.home}/logs/HotelCheckInServer.log"
+			filePattern="${catalina.home}/logs/HotelCheckInServer-%d{yyyy-MM-dd}.log"
+			append="true">
 			<PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
 			<Policies>
 				<TimeBasedTriggeringPolicy interval="1"

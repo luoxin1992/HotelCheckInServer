@@ -9,7 +9,6 @@ import cn.edu.xmu.ultraci.hotelcheckin.server.dto.LogoutDTO;
 
 /**
  * 系统类服务接口<br>
- * 包括：心跳、初始化、登录登出、短信验证
  * 
  * @author LuoXin
  *
