@@ -1,5 +1,6 @@
 package cn.edu.xmu.ultraci.hotelcheckin.server.dao.impl;
 
+import java.math.BigInteger;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
@@ -62,6 +63,15 @@ public class BaseDaoImpl implements IBaseDao {
 		try (Connection conn = getConnection()) {
 			return new QueryRunner().query(conn, sqlStmt, new ColumnListHandler<Object>(),
 					bindArgs);
+		}
+	}
+
+	@Override
+	public BigInteger executeInsert(String sqlStmt, Object... bindArgs) throws SQLException {
+		try (Connection conn = getConnection()) {
+			QueryRunner runner = new QueryRunner();
+			runner.update(conn, sqlStmt, bindArgs);
+			return runner.query(conn, "SELECT @@IDENTITY", new ScalarHandler<BigInteger>());
 		}
 	}
 

@@ -15,8 +15,8 @@ import org.apache.logging.log4j.Logger;
 
 import cn.edu.xmu.ultraci.hotelcheckin.server.constant.Action;
 import cn.edu.xmu.ultraci.hotelcheckin.server.constant.ErrorCode;
-import cn.edu.xmu.ultraci.hotelcheckin.server.dto.Base;
-import cn.edu.xmu.ultraci.hotelcheckin.server.dto.Heartbeat;
+import cn.edu.xmu.ultraci.hotelcheckin.server.dto.BaseDTO;
+import cn.edu.xmu.ultraci.hotelcheckin.server.dto.HeartbeatDTO;
 import cn.edu.xmu.ultraci.hotelcheckin.server.factory.BaseFactory;
 import cn.edu.xmu.ultraci.hotelcheckin.server.service.IAuthService;
 import cn.edu.xmu.ultraci.hotelcheckin.server.service.IConfService;
@@ -70,8 +70,8 @@ public class ClientServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		System.out.println(request.getParameterMap());
 		Map<String, String> params = ParamUtil.convertParams(request.getParameterMap());
+		System.out.println(params);
 		if (authServ.doAuth(params.get("random"), params.get("signature"))) {
 			// 鉴权成功，提供服务
 			String respJson = buildResponse(parseRequest(params));
@@ -83,13 +83,20 @@ public class ClientServlet extends HttpServlet {
 			// 鉴权失败
 			logger.warn("authentication failure, invalid request from " + request.getRemoteAddr());
 			try (PrintWriter pr = response.getWriter()) {
-				pr.write(JSONObject.fromObject(new Base(ErrorCode.AUTH_FAIL)).toString());
+				pr.write(JSONObject.fromObject(new BaseDTO(ErrorCode.AUTH_FAIL)).toString());
 				pr.flush();
 			}
 		}
 	}
 
-	private Base parseRequest(Map<String, String> params) {
+	/**
+	 * 解析请求<br>
+	 * 根据请求的action转发到特定的业务逻辑
+	 * 
+	 * @param params 请求参数
+	 * @return 业务逻辑处理结果
+	 */
+	private BaseDTO parseRequest(Map<String, String> params) {
 		switch (params.get("action")) {
 		case Action.HEARTBEAT:
 			return systemServ.heartbeat(params);
@@ -112,7 +119,8 @@ public class ClientServlet extends HttpServlet {
 		case Action.QUERY_ROOM:
 			break;
 		case Action.QUERY_INFO:
-			
+			break;
+		case Action.NEW_GUEST:
 			break;
 		case Action.CHECK_IN:
 			break;
@@ -121,12 +129,19 @@ public class ClientServlet extends HttpServlet {
 		case Action.PAY_RESULT:
 			break;
 		default:
-			break;
+			return new BaseDTO(ErrorCode.INVALID_REQ);
 		}
 		return null;
 	}
 
-	private <T extends Base> String buildResponse(T resp) {
+	/**
+	 * 封装响应<br>
+	 * 将DTO转换成JSON以通过IO传输
+	 * 
+	 * @param resp 响应对应的DTO
+	 * @return 响应对应的JSON
+	 */
+	private <T extends BaseDTO> String buildResponse(T resp) {
 		return JSONObject.fromObject(resp).toString();
 	}
 

@@ -3,21 +3,22 @@ package cn.edu.xmu.ultraci.hotelcheckin.server.po;
 import java.io.Serializable;
 
 /**
- * 基础信息表
+ * 散客表
  * 
  * @author LuoXin
  *
  */
-public class Info implements Serializable {
-	private static final long serialVersionUID = -1299242214093013692L;
+public class GuestPO implements Serializable {
+	private static final long serialVersionUID = 3111947581198749937L;
 
+	// 序号
 	private Integer id;
-	// 酒店名称
-	private String name;
-	// 酒店地址
-	private String address;
-	// 酒店电话
-	private String telephone;
+	// 手机
+	private String mobile;
+	// 身份证图片路径
+	private String idcard;
+	// 生成时间
+	private String time;
 
 	public Integer getId() {
 		return id;
@@ -27,28 +28,28 @@ public class Info implements Serializable {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public String getMobile() {
+		return mobile;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
 	}
 
-	public String getAddress() {
-		return address;
+	public String getIdcard() {
+		return idcard;
 	}
 
-	public void setAddress(String address) {
-		this.address = address;
+	public void setIdcard(String idcard) {
+		this.idcard = idcard;
 	}
 
-	public String getTelephone() {
-		return telephone;
+	public String getTime() {
+		return time;
 	}
 
-	public void setTelephone(String telephone) {
-		this.telephone = telephone;
+	public void setTime(String time) {
+		this.time = time;
 	}
 
 	@Override
@@ -67,7 +68,7 @@ public class Info implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Info other = (Info) obj;
+		GuestPO other = (GuestPO) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -78,8 +79,8 @@ public class Info implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Info [id=" + id + ", name=" + name + ", address=" + address + ", telephone="
-				+ telephone + "]";
+		return "Guest [id=" + id + ", mobile=" + mobile + ", idcard=" + idcard + ", time=" + time
+				+ "]";
 	}
 
 }

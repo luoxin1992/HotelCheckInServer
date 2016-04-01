@@ -2,7 +2,7 @@ package cn.edu.xmu.ultraci.hotelcheckin.server.dao;
 
 import java.util.List;
 
-import cn.edu.xmu.ultraci.hotelcheckin.server.po.Room;
+import cn.edu.xmu.ultraci.hotelcheckin.server.po.RoomPO;
 
 /**
  * 房间表DAO操作接口
@@ -16,9 +16,9 @@ public interface IRoomDao extends IBaseDao {
 	 * 新增房间信息
 	 * 
 	 * @param model 要新增的内容
-	 * @return 操作结果
+	 * @return 插入行的自增长ID
 	 */
-	public boolean createRoom(Room model);
+	public long createRoom(RoomPO model);
 
 	/**
 	 * 更新房间信息
@@ -26,7 +26,7 @@ public interface IRoomDao extends IBaseDao {
 	 * @param model 要更新的内容
 	 * @return 操作结果
 	 */
-	public boolean updateRoom(Room model);
+	public boolean updateRoom(RoomPO model);
 
 	/**
 	 * 删除房间信息
@@ -41,7 +41,7 @@ public interface IRoomDao extends IBaseDao {
 	 * 
 	 * @return 查询结果
 	 */
-	public List<Room> retrieveAllRoom();
+	public List<RoomPO> retrieveAllRoom();
 
 	/**
 	 * 根据ID查询房间信息
@@ -49,5 +49,5 @@ public interface IRoomDao extends IBaseDao {
 	 * @param id 要查询的ID
 	 * @return 查询结果
 	 */
-	public Room retrieveRoomById(int id);
+	public RoomPO retrieveRoomById(int id);
 }

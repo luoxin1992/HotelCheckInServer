@@ -3,13 +3,13 @@ package cn.edu.xmu.ultraci.hotelcheckin.server.po;
 import java.io.Serializable;
 
 /**
- * 员工表
+ * 会员表
  * 
  * @author LuoXin
  *
  */
-public class Staff implements Serializable {
-	private static final long serialVersionUID = -8322019473302819789L;
+public class MemberPO implements Serializable {
+	private static final long serialVersionUID = -715572395610283715L;
 
 	// 序号
 	private Integer id;
@@ -17,11 +17,11 @@ public class Staff implements Serializable {
 	private String no;
 	// 姓名
 	private String name;
-	// 声纹
-	private String voiceprint;
-	// 特权
-	private Integer privilege;
-	// 入职时间
+	// 身份证号
+	private String idcard;
+	// 手机
+	private String mobile;
+	// 入会时间
 	private String time;
 
 	public Integer getId() {
@@ -48,20 +48,20 @@ public class Staff implements Serializable {
 		this.name = name;
 	}
 
-	public String getVoiceprint() {
-		return voiceprint;
+	public String getIdcard() {
+		return idcard;
 	}
 
-	public void setVoiceprint(String voiceprint) {
-		this.voiceprint = voiceprint;
+	public void setIdcard(String idcard) {
+		this.idcard = idcard;
 	}
 
-	public Integer getPrivilege() {
-		return privilege;
+	public String getMobile() {
+		return mobile;
 	}
 
-	public void setPrivilege(Integer privilege) {
-		this.privilege = privilege;
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
 	}
 
 	public String getTime() {
@@ -88,7 +88,7 @@ public class Staff implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Staff other = (Staff) obj;
+		MemberPO other = (MemberPO) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -99,8 +99,8 @@ public class Staff implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Stuff [id=" + id + ", no=" + no + ", name=" + name + ", voiceprint=" + voiceprint
-				+ ", privilege=" + privilege + ", time=" + time + "]";
+		return "Member [id=" + id + ", no=" + no + ", name=" + name + ", idcard=" + idcard
+				+ ", mobile=" + mobile + ", time=" + time + "]";
 	}
 
 }

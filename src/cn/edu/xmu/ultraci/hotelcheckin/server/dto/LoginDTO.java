@@ -3,14 +3,14 @@ package cn.edu.xmu.ultraci.hotelcheckin.server.dto;
 import java.io.Serializable;
 
 /**
- * 对”登出“请求的响应
+ * 对”登录“请求的响应
  * 
  * @author LuoXin
  *
  */
-public class Logout extends Base implements Serializable {
+public class LoginDTO extends BaseDTO implements Serializable {
 
-	private static final long serialVersionUID = 4341211856729970178L;
+	private static final long serialVersionUID = 2019169072862004103L;
 
 	private String name;
 

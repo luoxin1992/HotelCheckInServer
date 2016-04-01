@@ -3,22 +3,22 @@ package cn.edu.xmu.ultraci.hotelcheckin.server.po;
 import java.io.Serializable;
 
 /**
- * 散客表
+ * 基础信息表
  * 
  * @author LuoXin
  *
  */
-public class Guest implements Serializable {
-	private static final long serialVersionUID = 3111947581198749937L;
+@Deprecated
+public class InfoPO implements Serializable {
+	private static final long serialVersionUID = -1299242214093013692L;
 
-	// 序号
 	private Integer id;
-	// 手机
-	private String mobile;
-	// 身份证图片路径
-	private String idcard;
-	// 生成时间
-	private String time;
+	// 酒店名称
+	private String name;
+	// 酒店地址
+	private String address;
+	// 酒店电话
+	private String telephone;
 
 	public Integer getId() {
 		return id;
@@ -28,28 +28,28 @@ public class Guest implements Serializable {
 		this.id = id;
 	}
 
-	public String getMobile() {
-		return mobile;
+	public String getName() {
+		return name;
 	}
 
-	public void setMobile(String mobile) {
-		this.mobile = mobile;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public String getIdcard() {
-		return idcard;
+	public String getAddress() {
+		return address;
 	}
 
-	public void setIdcard(String idcard) {
-		this.idcard = idcard;
+	public void setAddress(String address) {
+		this.address = address;
 	}
 
-	public String getTime() {
-		return time;
+	public String getTelephone() {
+		return telephone;
 	}
 
-	public void setTime(String time) {
-		this.time = time;
+	public void setTelephone(String telephone) {
+		this.telephone = telephone;
 	}
 
 	@Override
@@ -68,7 +68,7 @@ public class Guest implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Guest other = (Guest) obj;
+		InfoPO other = (InfoPO) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -79,8 +79,8 @@ public class Guest implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Guest [id=" + id + ", mobile=" + mobile + ", idcard=" + idcard + ", time=" + time
-				+ "]";
+		return "Info [id=" + id + ", name=" + name + ", address=" + address + ", telephone="
+				+ telephone + "]";
 	}
 
 }

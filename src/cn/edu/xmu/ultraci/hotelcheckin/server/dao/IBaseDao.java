@@ -1,5 +1,6 @@
 package cn.edu.xmu.ultraci.hotelcheckin.server.dao;
 
+import java.math.BigInteger;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
@@ -71,7 +72,17 @@ public interface IBaseDao {
 	public List<Object> queryMultiColumn(String sqlStmt, Object... bindArgs) throws SQLException;
 
 	/**
-	 * 插入、更新和刪除数据
+	 * 插入数据
+	 * 
+	 * @param sqlStmt 要执行的插入语句
+	 * @param bindArgs 绑定的参数
+	 * @return 插入行的自增长ID
+	 * @throws SQLException 如果数据库访问出错
+	 */
+	public BigInteger executeInsert(String sqlStmt, Object... bindArgs) throws SQLException;
+
+	/**
+	 * 更新和刪除数据
 	 * 
 	 * @param sqlStmt 要执行的更新语句
 	 * @param bindArgs 绑定的参数

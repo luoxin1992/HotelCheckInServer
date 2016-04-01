@@ -2,7 +2,7 @@ package cn.edu.xmu.ultraci.hotelcheckin.server.dao;
 
 import java.util.List;
 
-import cn.edu.xmu.ultraci.hotelcheckin.server.po.Guest;
+import cn.edu.xmu.ultraci.hotelcheckin.server.po.GuestPO;
 
 /**
  * 散客表DAO操作接口
@@ -16,9 +16,9 @@ public interface IGuestDao extends IBaseDao {
 	 * 新增散客信息
 	 * 
 	 * @param model 要新增的内容
-	 * @return 操作结果
+	 * @return 插入行的自增长ID
 	 */
-	public boolean createGuest(Guest model);
+	public long createGuest(GuestPO model);
 
 	/**
 	 * 更新散客信息
@@ -26,7 +26,7 @@ public interface IGuestDao extends IBaseDao {
 	 * @param model 要更新的内容
 	 * @return 操作结果
 	 */
-	public boolean updateGuest(Guest model);
+	public boolean updateGuest(GuestPO model);
 
 	/**
 	 * 删除散客信息
@@ -41,7 +41,7 @@ public interface IGuestDao extends IBaseDao {
 	 * 
 	 * @return 查询结果
 	 */
-	public List<Guest> retrieveAllGuest();
+	public List<GuestPO> retrieveAllGuest();
 
 	/**
 	 * 根据ID查询散客信息
@@ -49,5 +49,5 @@ public interface IGuestDao extends IBaseDao {
 	 * @param id 要查询的ID
 	 * @return 查询结果
 	 */
-	public Guest retrieveGuestById(int id);
+	public GuestPO retrieveGuestById(int id);
 }

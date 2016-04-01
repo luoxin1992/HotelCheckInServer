@@ -6,8 +6,9 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import cn.edu.xmu.ultraci.hotelcheckin.server.constant.LogTemplate;
 import cn.edu.xmu.ultraci.hotelcheckin.server.dao.IGuestDao;
-import cn.edu.xmu.ultraci.hotelcheckin.server.po.Guest;
+import cn.edu.xmu.ultraci.hotelcheckin.server.po.GuestPO;
 
 /**
  * 散客表DAO实现类
@@ -20,20 +21,19 @@ public class GuestDaoImpl extends BaseDaoImpl implements IGuestDao {
 	private static Logger logger = LogManager.getLogger();
 
 	@Override
-	public boolean createGuest(Guest model) {
+	public long createGuest(GuestPO model) {
 		try {
-			if (super.executeUpdate("INSERT INTO tbl_guest(mobile, idcard, time) VALUES(?, ?, ?)",
-					model.getMobile(), model.getIdcard(), model.getTime()) > 0) {
-				return true;
-			}
+			return super.executeInsert(
+					"INSERT INTO tbl_guest(mobile, idcard, time) VALUES(?, ?, ?)",
+					model.getMobile(), model.getIdcard(), model.getTime()).longValue();
 		} catch (SQLException e) {
-			logger.error("error while doing database operation.", e);
+			logger.error(LogTemplate.SQL_EXCP, e);
 		}
-		return false;
+		return -1;
 	}
 
 	@Override
-	public boolean updateGuest(Guest model) {
+	public boolean updateGuest(GuestPO model) {
 		try {
 			if (super.executeUpdate(
 					"UPDATE tbl_guest SET mobile = ?, idcard = ?, time = ? WHERE id = ? AND deleted = 0",
@@ -41,7 +41,7 @@ public class GuestDaoImpl extends BaseDaoImpl implements IGuestDao {
 				return true;
 			}
 		} catch (SQLException e) {
-			logger.error("error while doing database operation.", e);
+			logger.error(LogTemplate.SQL_EXCP, e);
 		}
 		return false;
 	}
@@ -54,29 +54,29 @@ public class GuestDaoImpl extends BaseDaoImpl implements IGuestDao {
 				return true;
 			}
 		} catch (SQLException e) {
-			logger.error("error while doing database operation.", e);
+			logger.error(LogTemplate.SQL_EXCP, e);
 		}
 		return false;
 	}
 
 	@Override
-	public List<Guest> retrieveAllGuest() {
+	public List<GuestPO> retrieveAllGuest() {
 		try {
-			return super.queryMultiRow(Guest.class, "SELECT * FROM tbl_guest WHERE deleted = 0",
+			return super.queryMultiRow(GuestPO.class, "SELECT * FROM tbl_guest WHERE deleted = 0",
 					(Object[]) null);
 		} catch (SQLException e) {
-			logger.error("error while doing database operation.", e);
+			logger.error(LogTemplate.SQL_EXCP, e);
 		}
 		return null;
 	}
 
 	@Override
-	public Guest retrieveGuestById(int id) {
+	public GuestPO retrieveGuestById(int id) {
 		try {
-			return super.querySingleRow(Guest.class,
+			return super.querySingleRow(GuestPO.class,
 					"SELECT * FROM tbl_guest WHERE id = ? AND deleted = 0", id);
 		} catch (SQLException e) {
-			logger.error("error while doing database operation.", e);
+			logger.error(LogTemplate.SQL_EXCP, e);
 		}
 		return null;
 	}

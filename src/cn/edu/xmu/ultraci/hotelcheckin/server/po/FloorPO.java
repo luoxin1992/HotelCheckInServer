@@ -3,13 +3,13 @@ package cn.edu.xmu.ultraci.hotelcheckin.server.po;
 import java.io.Serializable;
 
 /**
- * 房态表
+ * 楼层表
  * 
  * @author LuoXin
  *
  */
-public class Status implements Serializable {
-	private static final long serialVersionUID = 3133047797189757970L;
+public class FloorPO implements Serializable {
+	private static final long serialVersionUID = 7015299252443583482L;
 
 	// 序号
 	private Integer id;
@@ -58,7 +58,7 @@ public class Status implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Status other = (Status) obj;
+		FloorPO other = (FloorPO) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -69,7 +69,7 @@ public class Status implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Status [id=" + id + ", name=" + name + ", description=" + description + "]";
+		return "Floor [id=" + id + ", name=" + name + ", description=" + description + "]";
 	}
 
 }

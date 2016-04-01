@@ -3,18 +3,22 @@ package cn.edu.xmu.ultraci.hotelcheckin.server.po;
 import java.io.Serializable;
 
 /**
- * 楼层表
+ * 房型表
  * 
  * @author LuoXin
  *
  */
-public class Floor implements Serializable {
-	private static final long serialVersionUID = 7015299252443583482L;
+public class TypePO implements Serializable {
+	private static final long serialVersionUID = 6409412054473157813L;
 
 	// 序号
 	private Integer id;
 	// 名称
 	private String name;
+	// 押金
+	private Double deposit;
+	// 单价
+	private Double price;
 	// 描述
 	private String description;
 
@@ -32,6 +36,22 @@ public class Floor implements Serializable {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public Double getDeposit() {
+		return deposit;
+	}
+
+	public void setDeposit(Double deposit) {
+		this.deposit = deposit;
+	}
+
+	public Double getPrice() {
+		return price;
+	}
+
+	public void setPrice(Double price) {
+		this.price = price;
 	}
 
 	public String getDescription() {
@@ -58,7 +78,7 @@ public class Floor implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Floor other = (Floor) obj;
+		TypePO other = (TypePO) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -69,7 +89,8 @@ public class Floor implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Floor [id=" + id + ", name=" + name + ", description=" + description + "]";
+		return "Type [id=" + id + ", name=" + name + ", deposit=" + deposit + ", price=" + price
+				+ ", description=" + description + "]";
 	}
 
 }

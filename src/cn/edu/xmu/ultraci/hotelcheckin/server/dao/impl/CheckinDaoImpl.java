@@ -6,8 +6,9 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import cn.edu.xmu.ultraci.hotelcheckin.server.constant.LogTemplate;
 import cn.edu.xmu.ultraci.hotelcheckin.server.dao.ICheckinDao;
-import cn.edu.xmu.ultraci.hotelcheckin.server.po.Checkin;
+import cn.edu.xmu.ultraci.hotelcheckin.server.po.CheckinPO;
 
 /**
  * 住宿表DAO实现类
@@ -20,22 +21,20 @@ public class CheckinDaoImpl extends BaseDaoImpl implements ICheckinDao {
 	private static Logger logger = LogManager.getLogger();
 
 	@Override
-	public boolean createCheckin(Checkin model) {
+	public long createCheckin(CheckinPO model) {
 		try {
-			if (super.executeUpdate(
+			return super.executeInsert(
 					"INSERT INTO tbl_checkin(room, member, guest, stay, checkin, checkout) VALUES(?, ?, ?, ?, ?, ?)",
 					model.getRoom(), model.getMember(), model.getGuest(), model.getStay(),
-					model.getCheckin(), model.getCheckout()) > 0) {
-				return true;
-			}
+					model.getCheckin(), model.getCheckout()).longValue();
 		} catch (SQLException e) {
-			logger.error("error while doing database operation.", e);
+			logger.error(LogTemplate.SQL_EXCP, e);
 		}
-		return false;
+		return -1;
 	}
 
 	@Override
-	public boolean updateCheckin(Checkin model) {
+	public boolean updateCheckin(CheckinPO model) {
 		try {
 			if (super.executeUpdate(
 					"UPDATE tbl_checkin SET room = ?, member = ?, guest = ?, stay = ?, checkin = ?, checkout = ? WHERE id = ? AND deleted = 0",
@@ -44,7 +43,7 @@ public class CheckinDaoImpl extends BaseDaoImpl implements ICheckinDao {
 				return true;
 			}
 		} catch (SQLException e) {
-			logger.error("error while doing database operation.", e);
+			logger.error(LogTemplate.SQL_EXCP, e);
 		}
 		return false;
 	}
@@ -57,29 +56,29 @@ public class CheckinDaoImpl extends BaseDaoImpl implements ICheckinDao {
 				return true;
 			}
 		} catch (SQLException e) {
-			logger.error("error while doing database operation.", e);
+			logger.error(LogTemplate.SQL_EXCP, e);
 		}
 		return false;
 	}
 
 	@Override
-	public List<Checkin> retrieveAllCheckin() {
+	public List<CheckinPO> retrieveAllCheckin() {
 		try {
-			return super.queryMultiRow(Checkin.class, "SELECT * FROM tbl_checkin WHERE deleted = 0",
+			return super.queryMultiRow(CheckinPO.class, "SELECT * FROM tbl_checkin WHERE deleted = 0",
 					(Object[]) null);
 		} catch (SQLException e) {
-			logger.error("error while doing database operation.", e);
+			logger.error(LogTemplate.SQL_EXCP, e);
 		}
 		return null;
 	}
 
 	@Override
-	public Checkin retrieveCheckinById(int id) {
+	public CheckinPO retrieveCheckinById(int id) {
 		try {
-			return super.querySingleRow(Checkin.class,
+			return super.querySingleRow(CheckinPO.class,
 					"SELECT * FROM tbl_checkin WHERE id = ? AND deleted = 0", id);
 		} catch (SQLException e) {
-			logger.error("error while doing database operation.", e);
+			logger.error(LogTemplate.SQL_EXCP, e);
 		}
 		return null;
 	}

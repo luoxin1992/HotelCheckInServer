@@ -8,7 +8,8 @@ import java.io.Serializable;
  * @author LuoXin
  *
  */
-public class Log implements Serializable {
+@Deprecated
+public class LogPO implements Serializable {
 	private static final long serialVersionUID = 7783916599254073011L;
 
 	// 序号
@@ -68,7 +69,7 @@ public class Log implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Log other = (Log) obj;
+		LogPO other = (LogPO) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

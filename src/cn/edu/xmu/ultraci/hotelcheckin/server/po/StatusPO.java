@@ -3,24 +3,18 @@ package cn.edu.xmu.ultraci.hotelcheckin.server.po;
 import java.io.Serializable;
 
 /**
- * 房间表
+ * 房态表
  * 
  * @author LuoXin
  *
  */
-public class Room implements Serializable {
-	private static final long serialVersionUID = 4418075405216838826L;
+public class StatusPO implements Serializable {
+	private static final long serialVersionUID = 3133047797189757970L;
 
 	// 序号
 	private Integer id;
-	// 房号
-	private String no;
-	// 楼层
-	private Integer floor;
-	// 房型
-	private Integer type;
-	// 房态
-	private Integer status;
+	// 名称
+	private String name;
 	// 描述
 	private String description;
 
@@ -32,36 +26,12 @@ public class Room implements Serializable {
 		this.id = id;
 	}
 
-	public String getNo() {
-		return no;
+	public String getName() {
+		return name;
 	}
 
-	public void setNo(String no) {
-		this.no = no;
-	}
-
-	public Integer getFloor() {
-		return floor;
-	}
-
-	public void setFloor(Integer floor) {
-		this.floor = floor;
-	}
-
-	public Integer getType() {
-		return type;
-	}
-
-	public void setType(Integer type) {
-		this.type = type;
-	}
-
-	public Integer getStatus() {
-		return status;
-	}
-
-	public void setStatus(Integer status) {
-		this.status = status;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getDescription() {
@@ -88,7 +58,7 @@ public class Room implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Room other = (Room) obj;
+		StatusPO other = (StatusPO) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -99,8 +69,7 @@ public class Room implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Room [id=" + id + ", no=" + no + ", floor=" + floor + ", type=" + type + ", status="
-				+ status + ", description=" + description + "]";
+		return "Status [id=" + id + ", name=" + name + ", description=" + description + "]";
 	}
 
 }

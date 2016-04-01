@@ -6,8 +6,9 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import cn.edu.xmu.ultraci.hotelcheckin.server.constant.LogTemplate;
 import cn.edu.xmu.ultraci.hotelcheckin.server.dao.IRoomDao;
-import cn.edu.xmu.ultraci.hotelcheckin.server.po.Room;
+import cn.edu.xmu.ultraci.hotelcheckin.server.po.RoomPO;
 
 /**
  * 房间表DAO操作类
@@ -20,31 +21,29 @@ public class RoomDaoImpl extends BaseDaoImpl implements IRoomDao {
 	private static Logger logger = LogManager.getLogger();
 
 	@Override
-	public boolean createRoom(Room model) {
+	public long createRoom(RoomPO model) {
 		try {
-			if (super.executeUpdate(
-					"INSERT INTO tbl_room(no, floor, type, status, description) VALUES(?, ?, ?, ?, ?)",
-					model.getNo(), model.getFloor(), model.getType(), model.getStatus(),
-					model.getDescription()) > 0) {
-				return true;
-			}
+			return super.executeInsert(
+					"INSERT INTO tbl_room(no, name, floor, type, status, description) VALUES(?, ?, ?, ?, ?, ?)",
+					model.getNo(), model.getName(), model.getFloor(), model.getType(),
+					model.getStatus(), model.getDescription()).longValue();
 		} catch (SQLException e) {
-			logger.error("error while doing database operation.", e);
+			logger.error(LogTemplate.SQL_EXCP, e);
 		}
-		return false;
+		return -1;
 	}
 
 	@Override
-	public boolean updateRoom(Room model) {
+	public boolean updateRoom(RoomPO model) {
 		try {
 			if (super.executeUpdate(
-					"UPDATE tbl_room SET no = ?, floor = ?, type = ?, status = ?, description = ? WHERE id = ? AND deleted = 0",
-					model.getNo(), model.getFloor(), model.getType(), model.getStatus(),
-					model.getDescription(), model.getId()) > 0) {
+					"UPDATE tbl_room SET no = ?, name=?, floor = ?, type = ?, status = ?, description = ? WHERE id = ? AND deleted = 0",
+					model.getNo(), model.getName(), model.getFloor(), model.getType(),
+					model.getStatus(), model.getDescription(), model.getId()) > 0) {
 				return true;
 			}
 		} catch (SQLException e) {
-			logger.error("error while doing database operation.", e);
+			logger.error(LogTemplate.SQL_EXCP, e);
 		}
 		return false;
 	}
@@ -57,29 +56,29 @@ public class RoomDaoImpl extends BaseDaoImpl implements IRoomDao {
 				return true;
 			}
 		} catch (SQLException e) {
-			logger.error("error while doing database operation.", e);
+			logger.error(LogTemplate.SQL_EXCP, e);
 		}
 		return false;
 	}
 
 	@Override
-	public List<Room> retrieveAllRoom() {
+	public List<RoomPO> retrieveAllRoom() {
 		try {
-			return super.queryMultiRow(Room.class, "SELECT * FROM tbl_room WHERE deleted = 0",
+			return super.queryMultiRow(RoomPO.class, "SELECT * FROM tbl_room WHERE deleted = 0",
 					(Object[]) null);
 		} catch (SQLException e) {
-			logger.error("error while doing database operation.", e);
+			logger.error(LogTemplate.SQL_EXCP, e);
 		}
 		return null;
 	}
 
 	@Override
-	public Room retrieveRoomById(int id) {
+	public RoomPO retrieveRoomById(int id) {
 		try {
-			return super.querySingleRow(Room.class,
+			return super.querySingleRow(RoomPO.class,
 					"SELECT * FROM tbl_room WHERE id = ? AND deleted = 0", id);
 		} catch (SQLException e) {
-			logger.error("error while doing database operation.", e);
+			logger.error(LogTemplate.SQL_EXCP, e);
 		}
 		return null;
 	}

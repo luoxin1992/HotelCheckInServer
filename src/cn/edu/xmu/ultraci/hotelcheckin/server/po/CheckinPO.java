@@ -8,7 +8,7 @@ import java.io.Serializable;
  * @author LuoXin
  *
  */
-public class Checkin implements Serializable {
+public class CheckinPO implements Serializable {
 	private static final long serialVersionUID = -4712562884864553515L;
 
 	// 序号
@@ -98,7 +98,7 @@ public class Checkin implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Checkin other = (Checkin) obj;
+		CheckinPO other = (CheckinPO) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

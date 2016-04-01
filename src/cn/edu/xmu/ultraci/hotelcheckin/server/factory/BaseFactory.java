@@ -6,9 +6,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import cn.edu.xmu.ultraci.hotelcheckin.server.util.StringUtil;
 
 /**
  * 简单工厂实现<br>
@@ -39,7 +40,7 @@ public class BaseFactory {
 
 	public static <T> Object getInstance(Class<T> clazz) {
 		String implName = prop.getProperty(clazz.getSimpleName());
-		if (!StringUtils.isBlank(implName)) {
+		if (!StringUtil.isBlank(implName)) {
 			if (map.get(implName) == null) {
 				try {
 					Object implInst = Class.forName(implName).newInstance();

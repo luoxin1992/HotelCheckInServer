@@ -6,8 +6,9 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import cn.edu.xmu.ultraci.hotelcheckin.server.constant.LogTemplate;
 import cn.edu.xmu.ultraci.hotelcheckin.server.dao.ITypeDao;
-import cn.edu.xmu.ultraci.hotelcheckin.server.po.Type;
+import cn.edu.xmu.ultraci.hotelcheckin.server.po.TypePO;
 
 /**
  * 房型表DAO实现类
@@ -20,22 +21,20 @@ public class TypeDaoImpl extends BaseDaoImpl implements ITypeDao {
 	private Logger logger = LogManager.getLogger();
 
 	@Override
-	public boolean createType(Type model) {
+	public long createType(TypePO model) {
 		try {
-			if (super.executeUpdate(
+			return super.executeInsert(
 					"INSERT INTO tbl_type(name, deposit, price, description) VALUES(?, ?, ?, ?)",
-					model.getName(), model.getDeposit(), model.getPrice(),
-					model.getDescription()) > 0) {
-				return true;
-			}
+					model.getName(), model.getDeposit(), model.getPrice(), model.getDescription())
+							.longValue();
 		} catch (SQLException e) {
-			logger.error("error while doing database operation.", e);
+			logger.error(LogTemplate.SQL_EXCP, e);
 		}
-		return false;
+		return -1;
 	}
 
 	@Override
-	public boolean updateType(Type model) {
+	public boolean updateType(TypePO model) {
 		try {
 			if (super.executeUpdate(
 					"UPDATE tbl_type SET name = ?, deposit = ?, price = ?, description = ? WHERE id = ? AND deleted = 0",
@@ -44,7 +43,7 @@ public class TypeDaoImpl extends BaseDaoImpl implements ITypeDao {
 				return true;
 			}
 		} catch (SQLException e) {
-			logger.error("error while doing database operation.", e);
+			logger.error(LogTemplate.SQL_EXCP, e);
 		}
 		return false;
 	}
@@ -57,29 +56,29 @@ public class TypeDaoImpl extends BaseDaoImpl implements ITypeDao {
 				return true;
 			}
 		} catch (SQLException e) {
-			logger.error("error while doing database operation.", e);
+			logger.error(LogTemplate.SQL_EXCP, e);
 		}
 		return false;
 	}
 
 	@Override
-	public List<Type> retrieveAllType() {
+	public List<TypePO> retrieveAllType() {
 		try {
-			return super.queryMultiRow(Type.class, "SELECT * FROM tbl_type WHERE deleted = 0",
+			return super.queryMultiRow(TypePO.class, "SELECT * FROM tbl_type WHERE deleted = 0",
 					(Object[]) null);
 		} catch (SQLException e) {
-			logger.error("error while doing database operation.", e);
+			logger.error(LogTemplate.SQL_EXCP, e);
 		}
 		return null;
 	}
 
 	@Override
-	public Type retrieveTypeById(int id) {
+	public TypePO retrieveTypeById(int id) {
 		try {
-			return super.querySingleRow(Type.class,
+			return super.querySingleRow(TypePO.class,
 					"SELECT * FROM tbl_type WHERE id = ? AND deleted = 0", id);
 		} catch (SQLException e) {
-			logger.error("error while doing database operation.", e);
+			logger.error(LogTemplate.SQL_EXCP, e);
 		}
 		return null;
 	}

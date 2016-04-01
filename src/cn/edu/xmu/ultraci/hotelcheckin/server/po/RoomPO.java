@@ -3,22 +3,26 @@ package cn.edu.xmu.ultraci.hotelcheckin.server.po;
 import java.io.Serializable;
 
 /**
- * 房型表
+ * 房间表
  * 
  * @author LuoXin
  *
  */
-public class Type implements Serializable {
-	private static final long serialVersionUID = 6409412054473157813L;
+public class RoomPO implements Serializable {
+	private static final long serialVersionUID = 4418075405216838826L;
 
 	// 序号
 	private Integer id;
-	// 名称
+	// 房卡号
+	private String no;
+	// 房号
 	private String name;
-	// 押金
-	private Double deposit;
-	// 单价
-	private Double price;
+	// 楼层
+	private Integer floor;
+	// 房型
+	private Integer type;
+	// 房态
+	private Integer status;
 	// 描述
 	private String description;
 
@@ -30,28 +34,44 @@ public class Type implements Serializable {
 		this.id = id;
 	}
 
+	public String getNo() {
+		return no;
+	}
+
+	public void setNo(String no) {
+		this.no = no;
+	}
+
 	public String getName() {
 		return name;
 	}
 
 	public void setName(String name) {
-		this.name = name;
+		this.no = name;
 	}
 
-	public Double getDeposit() {
-		return deposit;
+	public Integer getFloor() {
+		return floor;
 	}
 
-	public void setDeposit(Double deposit) {
-		this.deposit = deposit;
+	public void setFloor(Integer floor) {
+		this.floor = floor;
 	}
 
-	public Double getPrice() {
-		return price;
+	public Integer getType() {
+		return type;
 	}
 
-	public void setPrice(Double price) {
-		this.price = price;
+	public void setType(Integer type) {
+		this.type = type;
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
 	}
 
 	public String getDescription() {
@@ -78,7 +98,7 @@ public class Type implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Type other = (Type) obj;
+		RoomPO other = (RoomPO) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -89,8 +109,8 @@ public class Type implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Type [id=" + id + ", name=" + name + ", deposit=" + deposit + ", price=" + price
-				+ ", description=" + description + "]";
+		return "Room [id=" + id + ", no=" + no + ", name=" + name + ", floor=" + floor + ", type="
+				+ type + ", status=" + status + ", description=" + description + "]";
 	}
 
 }

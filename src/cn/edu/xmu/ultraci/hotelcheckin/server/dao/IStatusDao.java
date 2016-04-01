@@ -2,7 +2,7 @@ package cn.edu.xmu.ultraci.hotelcheckin.server.dao;
 
 import java.util.List;
 
-import cn.edu.xmu.ultraci.hotelcheckin.server.po.Status;
+import cn.edu.xmu.ultraci.hotelcheckin.server.po.StatusPO;
 
 /**
  * 房态表DAO操作接口
@@ -15,9 +15,9 @@ public interface IStatusDao {
 	 * 新增房态信息
 	 * 
 	 * @param model 要新增的内容
-	 * @return 操作结果
+	 * @return 插入行的自增长ID
 	 */
-	public boolean createStatus(Status model);
+	public long createStatus(StatusPO model);
 
 	/**
 	 * 更新房态信息
@@ -25,7 +25,7 @@ public interface IStatusDao {
 	 * @param model 要更新的内容
 	 * @return 操作结果
 	 */
-	public boolean updateStatus(Status model);
+	public boolean updateStatus(StatusPO model);
 
 	/**
 	 * 删除房态信息
@@ -40,7 +40,7 @@ public interface IStatusDao {
 	 * 
 	 * @return 查询结果
 	 */
-	public List<Status> retrieveAllStatus();
+	public List<StatusPO> retrieveAllStatus();
 
 	/**
 	 * 根据ID查询房态信息
@@ -48,5 +48,5 @@ public interface IStatusDao {
 	 * @param id 要查询的ID
 	 * @return 查询结果
 	 */
-	public Status retrieveStatusById(int id);
+	public StatusPO retrieveStatusById(int id);
 }

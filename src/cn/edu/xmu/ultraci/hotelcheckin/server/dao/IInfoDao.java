@@ -2,7 +2,7 @@ package cn.edu.xmu.ultraci.hotelcheckin.server.dao;
 
 import java.util.List;
 
-import cn.edu.xmu.ultraci.hotelcheckin.server.po.Info;
+import cn.edu.xmu.ultraci.hotelcheckin.server.po.InfoPO;
 
 /**
  * 基础信息表DAO操作接口
@@ -10,6 +10,7 @@ import cn.edu.xmu.ultraci.hotelcheckin.server.po.Info;
  * @author LuoXin
  *
  */
+@Deprecated
 public interface IInfoDao extends IBaseDao {
 
 	/**
@@ -18,7 +19,7 @@ public interface IInfoDao extends IBaseDao {
 	 * @param model 要新增的内容
 	 * @return 操作结果
 	 */
-	public boolean createInfo(Info model);
+	public boolean createInfo(InfoPO model);
 
 	/**
 	 * 更新基本信息
@@ -26,7 +27,7 @@ public interface IInfoDao extends IBaseDao {
 	 * @param model 要更新的内容
 	 * @return 操作结果
 	 */
-	public boolean updateInfo(Info model);
+	public boolean updateInfo(InfoPO model);
 
 	/**
 	 * 删除基本信息
@@ -41,7 +42,7 @@ public interface IInfoDao extends IBaseDao {
 	 * 
 	 * @return 查询结果
 	 */
-	public List<Info> retrieveAllInfo();
+	public List<InfoPO> retrieveAllInfo();
 
 	/**
 	 * 根据ID查询基本信息
@@ -49,6 +50,6 @@ public interface IInfoDao extends IBaseDao {
 	 * @param id 要查询的ID
 	 * @return 查询结果
 	 */
-	public Info retrieveInfoById(int id);
+	public InfoPO retrieveInfoById(int id);
 
 }

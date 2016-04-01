@@ -8,7 +8,7 @@ import java.io.Serializable;
  * @author LuoXin
  *
  */
-public class Client implements Serializable {
+public class ClientPO implements Serializable {
 
 	private static final long serialVersionUID = -1103665762699603521L;
 
@@ -59,7 +59,7 @@ public class Client implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Client other = (Client) obj;
+		ClientPO other = (ClientPO) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

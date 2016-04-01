@@ -7,14 +7,15 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import cn.edu.xmu.ultraci.hotelcheckin.server.dao.IInfoDao;
-import cn.edu.xmu.ultraci.hotelcheckin.server.po.Info;
+import cn.edu.xmu.ultraci.hotelcheckin.server.po.InfoPO;
 
+@Deprecated
 public class InfoDaoImpl extends BaseDaoImpl implements IInfoDao {
 
 	private Logger logger = LogManager.getLogger();
 
 	@Override
-	public boolean createInfo(Info model) {
+	public boolean createInfo(InfoPO model) {
 		try {
 			if (super.executeUpdate(
 					"INSERT INTO tbl_info(name, address, telephone) VALUES(?, ?, ?)",
@@ -28,7 +29,7 @@ public class InfoDaoImpl extends BaseDaoImpl implements IInfoDao {
 	}
 
 	@Override
-	public boolean updateInfo(Info model) {
+	public boolean updateInfo(InfoPO model) {
 		try {
 			if (super.executeUpdate(
 					"UPDATE tbl_info SET name = ?, address = ?, telephone = ? WHERE id = ? AND deleted = 0",
@@ -55,9 +56,9 @@ public class InfoDaoImpl extends BaseDaoImpl implements IInfoDao {
 	}
 
 	@Override
-	public List<Info> retrieveAllInfo() {
+	public List<InfoPO> retrieveAllInfo() {
 		try {
-			return super.queryMultiRow(Info.class, "SELECT * FROM tbl_info WHERE deleted = 0",
+			return super.queryMultiRow(InfoPO.class, "SELECT * FROM tbl_info WHERE deleted = 0",
 					(Object[]) null);
 		} catch (SQLException e) {
 			logger.error("error while doing database operation.", e);
@@ -66,9 +67,9 @@ public class InfoDaoImpl extends BaseDaoImpl implements IInfoDao {
 	}
 
 	@Override
-	public Info retrieveInfoById(int id) {
+	public InfoPO retrieveInfoById(int id) {
 		try {
-			return super.querySingleRow(Info.class,
+			return super.querySingleRow(InfoPO.class,
 					"SELECT * FROM tbl_info WHERE id = ? AND deleted = 0", id);
 		} catch (SQLException e) {
 			logger.error("error while doing database operation.", e);

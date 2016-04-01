@@ -6,8 +6,9 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import cn.edu.xmu.ultraci.hotelcheckin.server.constant.LogTemplate;
 import cn.edu.xmu.ultraci.hotelcheckin.server.dao.IMemberDao;
-import cn.edu.xmu.ultraci.hotelcheckin.server.po.Member;
+import cn.edu.xmu.ultraci.hotelcheckin.server.po.MemberPO;
 
 /**
  * 会员表DAO实现类
@@ -20,22 +21,20 @@ public class MemberDaoImpl extends BaseDaoImpl implements IMemberDao {
 	private static Logger logger = LogManager.getLogger();
 
 	@Override
-	public boolean createMember(Member model) {
+	public long createMember(MemberPO model) {
 		try {
-			if (super.executeUpdate(
+			return super.executeInsert(
 					"INSERT INTO tbl_member(no, name, idcard, mobile, time) VALUES(?, ?, ?, ?, ?)",
 					model.getNo(), model.getName(), model.getIdcard(), model.getMobile(),
-					model.getTime()) > 0) {
-				return true;
-			}
+					model.getTime()).longValue();
 		} catch (SQLException e) {
-			logger.error("error while doing database operation.", e);
+			logger.error(LogTemplate.SQL_EXCP, e);
 		}
-		return false;
+		return -1;
 	}
 
 	@Override
-	public boolean updateMember(Member model) {
+	public boolean updateMember(MemberPO model) {
 		try {
 			if (super.executeUpdate(
 					"UPDATE tbl_member SET no = ?, name = ?, idcard = ?, mobile = ?, time = ? WHERE id = ? AND deleted = 0",
@@ -44,7 +43,7 @@ public class MemberDaoImpl extends BaseDaoImpl implements IMemberDao {
 				return true;
 			}
 		} catch (SQLException e) {
-			logger.error("error while doing database operation.", e);
+			logger.error(LogTemplate.SQL_EXCP, e);
 		}
 		return false;
 	}
@@ -57,29 +56,40 @@ public class MemberDaoImpl extends BaseDaoImpl implements IMemberDao {
 				return true;
 			}
 		} catch (SQLException e) {
-			logger.error("error while doing database operation.", e);
+			logger.error(LogTemplate.SQL_EXCP, e);
 		}
 		return false;
 	}
 
 	@Override
-	public List<Member> retrieveAllMember() {
+	public List<MemberPO> retrieveAllMember() {
 		try {
-			return super.queryMultiRow(Member.class, "SELECT * FROM tbl_member WHERE deleted = 0",
+			return super.queryMultiRow(MemberPO.class, "SELECT * FROM tbl_member WHERE deleted = 0",
 					(Object[]) null);
 		} catch (SQLException e) {
-			logger.error("error while doing database operation.", e);
+			logger.error(LogTemplate.SQL_EXCP, e);
 		}
 		return null;
 	}
 
 	@Override
-	public Member retrieveMemberById(int id) {
+	public MemberPO retrieveMemberById(int id) {
 		try {
-			return super.querySingleRow(Member.class,
+			return super.querySingleRow(MemberPO.class,
 					"SELECT * FROM tbl_member WHERE id = ? AND deleted = 0", id);
 		} catch (SQLException e) {
-			logger.error("error while doing database operation.", e);
+			logger.error(LogTemplate.SQL_EXCP, e);
+		}
+		return null;
+	}
+
+	@Override
+	public MemberPO retrieveMemberByCardId(String cardId) {
+		try {
+			return super.querySingleRow(MemberPO.class,
+					"SELECT * FROM tbl_member WHERE cardid = ? AND deleted = 0", cardId);
+		} catch (SQLException e) {
+			logger.error(LogTemplate.SQL_EXCP, e);
 		}
 		return null;
 	}

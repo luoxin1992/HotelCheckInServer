@@ -2,7 +2,7 @@ package cn.edu.xmu.ultraci.hotelcheckin.server.dao;
 
 import java.util.List;
 
-import cn.edu.xmu.ultraci.hotelcheckin.server.po.Floor;
+import cn.edu.xmu.ultraci.hotelcheckin.server.po.FloorPO;
 
 /**
  * 楼层表DAO操作接口
@@ -16,9 +16,9 @@ public interface IFloorDao extends IBaseDao {
 	 * 新增楼层信息
 	 * 
 	 * @param model 要新增的内容
-	 * @return 操作结果
+	 * @return 插入行的自增长ID
 	 */
-	public boolean createFloor(Floor model);
+	public long createFloor(FloorPO model);
 
 	/**
 	 * 更新楼层信息
@@ -26,7 +26,7 @@ public interface IFloorDao extends IBaseDao {
 	 * @param model 要更新的内容
 	 * @return 操作结果
 	 */
-	public boolean updateFloor(Floor model);
+	public boolean updateFloor(FloorPO model);
 
 	/**
 	 * 删除楼层信息
@@ -41,7 +41,7 @@ public interface IFloorDao extends IBaseDao {
 	 * 
 	 * @return 查询结果
 	 */
-	public List<Floor> retrieveAllFloor();
+	public List<FloorPO> retrieveAllFloor();
 
 	/**
 	 * 根据ID查询楼层信息
@@ -49,5 +49,5 @@ public interface IFloorDao extends IBaseDao {
 	 * @param id 要查询的ID
 	 * @return 查询结果
 	 */
-	public Floor retrieveFloorById(int id);
+	public FloorPO retrieveFloorById(int id);
 }

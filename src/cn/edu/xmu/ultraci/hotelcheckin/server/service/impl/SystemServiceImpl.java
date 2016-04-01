@@ -3,32 +3,28 @@ package cn.edu.xmu.ultraci.hotelcheckin.server.service.impl;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import cn.edu.xmu.ultraci.hotelcheckin.server.constant.ErrorCode;
 import cn.edu.xmu.ultraci.hotelcheckin.server.constant.LogTemplate;
 import cn.edu.xmu.ultraci.hotelcheckin.server.dao.IClientDao;
-import cn.edu.xmu.ultraci.hotelcheckin.server.dao.ILogDao;
 import cn.edu.xmu.ultraci.hotelcheckin.server.dao.IStaffDao;
-import cn.edu.xmu.ultraci.hotelcheckin.server.dto.Advertisement;
-import cn.edu.xmu.ultraci.hotelcheckin.server.dto.Base;
-import cn.edu.xmu.ultraci.hotelcheckin.server.dto.Heartbeat;
-import cn.edu.xmu.ultraci.hotelcheckin.server.dto.Init;
-import cn.edu.xmu.ultraci.hotelcheckin.server.dto.Login;
-import cn.edu.xmu.ultraci.hotelcheckin.server.dto.Logout;
+import cn.edu.xmu.ultraci.hotelcheckin.server.dto.BaseDTO;
+import cn.edu.xmu.ultraci.hotelcheckin.server.dto.HeartbeatDTO;
+import cn.edu.xmu.ultraci.hotelcheckin.server.dto.InitDTO;
+import cn.edu.xmu.ultraci.hotelcheckin.server.dto.LoginDTO;
+import cn.edu.xmu.ultraci.hotelcheckin.server.dto.LogoutDTO;
 import cn.edu.xmu.ultraci.hotelcheckin.server.factory.BaseFactory;
-import cn.edu.xmu.ultraci.hotelcheckin.server.po.Client;
-import cn.edu.xmu.ultraci.hotelcheckin.server.po.Log;
-import cn.edu.xmu.ultraci.hotelcheckin.server.po.Staff;
+import cn.edu.xmu.ultraci.hotelcheckin.server.po.ClientPO;
+import cn.edu.xmu.ultraci.hotelcheckin.server.po.StaffPO;
 import cn.edu.xmu.ultraci.hotelcheckin.server.service.IConfService;
 import cn.edu.xmu.ultraci.hotelcheckin.server.service.ISystemService;
+import cn.edu.xmu.ultraci.hotelcheckin.server.util.StringUtil;
 import cn.edu.xmu.ultraci.hotelcheckin.server.util.TimeUtil;
 
 public class SystemServiceImpl implements ISystemService {
@@ -36,14 +32,14 @@ public class SystemServiceImpl implements ISystemService {
 	private static Logger logger = LogManager.getLogger();
 
 	@Override
-	public Heartbeat heartbeat(Map<String, String> param) {
-		String device = param.get("device");
-		if (!StringUtils.isBlank(device)) {
+	public HeartbeatDTO heartbeat(Map<String, String> params) {
+		String device = params.get("device");
+		if (!StringUtil.isBlank(device)) {
 			IClientDao clientDao = (IClientDao) BaseFactory.getInstance(IClientDao.class);
-			Client client = clientDao.retrieveClientByDevice(device);
+			ClientPO client = clientDao.retrieveClientByDevice(device);
 			if (client == null) {
 				// 如果客户端不存在，则添加
-				client = new Client();
+				client = new ClientPO();
 				client.setDevice(device);
 				client.setHeartbeat(TimeUtil.formatTime(System.currentTimeMillis()));
 				clientDao.createClient(client);
@@ -52,107 +48,123 @@ public class SystemServiceImpl implements ISystemService {
 				client.setHeartbeat(TimeUtil.formatTime(System.currentTimeMillis()));
 				clientDao.updateClient(client);
 			}
-			return new Heartbeat();
+			logger.info(String.format(LogTemplate.HEARTBEAT, device));
+			return new HeartbeatDTO();
 		} else {
-			return (Heartbeat) new Base(ErrorCode.INVALID_REQ);
+			logger.warn(String.format(LogTemplate.INVALID_REQ, params));
+			return (HeartbeatDTO) new BaseDTO(ErrorCode.INVALID_REQ);
 		}
 	}
 
 	@Override
-	public Init init(Map<String, String> param) {
-		String device = param.get("device");
-		if (!StringUtils.isBlank(device)) {
-			Init init = new Init();
+	public InitDTO init(Map<String, String> params) {
+		String device = params.get("device");
+		if (!StringUtil.isBlank(device)) {
+			InitDTO init = new InitDTO();
 			// 读配置文件
 			IConfService confServ = (IConfService) BaseFactory.getInstance(IConfService.class);
 			// 读站点根目录
 			String root = confServ.getConf("root");
-			// 取客户端升级
+			// 读客户端升级
 			init.getUpgrade().setVersion(Integer.parseInt(confServ.getConf("version")));
 			init.getUpgrade().setUrl(confServ.getConf("download"));
 			init.getUpgrade().setSize(new File(root + confServ.getConf("download")).length());
-			// 取客户端公告
-			init.setNotice(confServ.getConf("notice"));
-			// 取客户端广告
-			int adCount = Integer.parseInt(confServ.getConf("adcount"));
-			List<Advertisement> adList = init.getAd();
-			for (int i = 1; i <= adCount; i++) {
-				String adFileName = confServ.getConf("ad" + i);
-				String adFilePath = root + adFileName;
-				String adFileMD5 = null;
-				try {
-					adFileMD5 = DigestUtils
-							.md5Hex(IOUtils.toByteArray(new FileInputStream(adFileName)));
-				} catch (IOException e) {
-					logger.error("error while calculating MD5 of advertisement file.", e);
-				}
-				Advertisement ad = new Advertisement();
-				ad.setUrl(adFilePath);
-				ad.setMd5(adFileMD5);
-				adList.add(ad);
+			// 计算客户端升级包MD5
+			String upgradePath = root + confServ.getConf("download");
+			String upgradeMd5 = null;
+			try {
+				upgradeMd5 = DigestUtils
+						.md5Hex(IOUtils.toByteArray(new FileInputStream(upgradePath)));
+			} catch (IOException e) {
+				logger.error(LogTemplate.IO_EXCP_MD5, e);
 			}
-			// 记录日志
-			Log log = new Log();
-			log.setTime(TimeUtil.formatTime(System.currentTimeMillis()));
-			log.setDevice(device);
-			log.setContent(LogTemplate.INIT);
-			ILogDao logDao = (ILogDao) BaseFactory.getInstance(ILogDao.class);
-			logDao.createLog(log);
+			init.getUpgrade().setMd5(upgradeMd5);
+			// 读客户端公告
+			init.setNotice(confServ.getConf("notice"));
+			// 读客户端广告
+			int adCount = Integer.parseInt(confServ.getConf("adcount"));
+			for (int i = 1; i <= adCount; i++) {
+				String adUrl = confServ.getConf("ad" + i);
+				String adMd5 = null;
+				String adPath = root + adUrl;
+				try {
+					adMd5 = DigestUtils.md5Hex(IOUtils.toByteArray(new FileInputStream(adPath)));
+				} catch (IOException e) {
+					logger.error(LogTemplate.IO_EXCP_MD5, e);
+				}
+				init.addAd(adUrl, adMd5);
+			}
+			logger.info(String.format(LogTemplate.INIT, device));
 			return init;
 		} else {
-			return (Init) new Base(ErrorCode.INVALID_REQ);
+			logger.warn(String.format(LogTemplate.INVALID_REQ, params));
+			return (InitDTO) new BaseDTO(ErrorCode.INVALID_REQ);
 		}
 	}
 
 	@Override
-	public Login login(Map<String, String> param) {
-		String device = param.get("device");
-		String cardId = param.get("cardid");
-		if (!StringUtils.isBlank(device) && StringUtils.isBlank(cardId)) {
+	public LoginDTO login(Map<String, String> params) {
+		String device = params.get("device");
+		String cardid = params.get("cardid");
+		if (!StringUtil.isBlank(device) && StringUtil.isBlank(cardid)) {
 			IStaffDao staffDao = (IStaffDao) BaseFactory.getInstance(IStaffDao.class);
-			Staff staff = staffDao.retrieveStaffByCardId(cardId);
+			StaffPO staff = staffDao.retrieveStaffByCardId(cardid);
 			if (staff != null) {
 				if (staff.getPrivilege() == 1) {
-					Login login = new Login();
-					login.setName(staff.getName());
-					login.setResult(ErrorCode.OK);
-					return login;
+					LoginDTO model = new LoginDTO();
+					model.setName(staff.getName());
+
+					logger.info(String.format(LogTemplate.LOGIN_OK, device, cardid));
+					return model;
 				} else {
-					return (Login) new Base(ErrorCode.LOGIN_OUT_FAIL_NO_PREVILEGE);
+					logger.warn(String.format(LogTemplate.LOGIN_NO_PREMISSION, device, cardid));
+					return (LoginDTO) new BaseDTO(ErrorCode.LOGIN_OUT_FAIL_NO_PREMISSION);
 				}
 			} else {
-				return (Login) new Base(ErrorCode.LOGIN_OUT_FAIL_NO_SUCH_CARD);
+				logger.warn(String.format(LogTemplate.LOGIN_NO_SUCH_CARD, device, cardid));
+				return (LoginDTO) new BaseDTO(ErrorCode.LOGIN_OUT_FAIL_NO_SUCH_CARD);
 			}
 		} else {
-			return (Login) new Base(ErrorCode.INVALID_REQ);
+			logger.warn(String.format(LogTemplate.INVALID_REQ, params));
+			return (LoginDTO) new BaseDTO(ErrorCode.INVALID_REQ);
 		}
 	}
 
-	public Logout logout(Map<String, String> param) {
-		String device = param.get("device");
-		String cardId = param.get("cardid");
-		if (!StringUtils.isBlank(device) && StringUtils.isBlank(cardId)) {
+	public LogoutDTO logout(Map<String, String> params) {
+		String device = params.get("device");
+		String cardid = params.get("cardid");
+		if (!StringUtil.isBlank(device) && !StringUtil.isBlank(cardid)) {
 			IStaffDao staffDao = (IStaffDao) BaseFactory.getInstance(IStaffDao.class);
-			Staff staff = staffDao.retrieveStaffByCardId(cardId);
+			StaffPO staff = staffDao.retrieveStaffByCardId(cardid);
 			if (staff != null) {
 				if (staff.getPrivilege() == 1) {
-					Logout logout = new Logout();
+					LogoutDTO logout = new LogoutDTO();
 					logout.setName(staff.getName());
-					logout.setResult(ErrorCode.OK);
+
+					logger.info(String.format(LogTemplate.LOGOUT_OK, device, cardid));
 					return logout;
 				} else {
-					return (Logout) new Base(ErrorCode.LOGIN_OUT_FAIL_NO_PREVILEGE);
+					logger.warn(String.format(LogTemplate.LOGOUT_NO_PREMISSION, device, cardid));
+					return (LogoutDTO) new BaseDTO(ErrorCode.LOGIN_OUT_FAIL_NO_PREMISSION);
 				}
 			} else {
-				return (Logout) new Base(ErrorCode.LOGIN_OUT_FAIL_NO_SUCH_CARD);
+				logger.warn(String.format(LogTemplate.LOGOUT_NO_SUCH_CARD, device, cardid));
+				return (LogoutDTO) new BaseDTO(ErrorCode.LOGIN_OUT_FAIL_NO_SUCH_CARD);
 			}
 		} else {
-			return (Logout) new Base(ErrorCode.INVALID_REQ);
+			logger.warn(String.format(LogTemplate.INVALID_REQ, params));
+			return (LogoutDTO) new BaseDTO(ErrorCode.INVALID_REQ);
 		}
 	}
 
 	@Override
-	public void sms(Map<String, String> param) {
+	public void voiceprint(Map<String, String> params) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void sms(Map<String, String> params) {
 		// TODO Auto-generated method stub
 
 	}

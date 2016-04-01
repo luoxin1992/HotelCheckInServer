@@ -6,8 +6,9 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import cn.edu.xmu.ultraci.hotelcheckin.server.constant.LogTemplate;
 import cn.edu.xmu.ultraci.hotelcheckin.server.dao.IStaffDao;
-import cn.edu.xmu.ultraci.hotelcheckin.server.po.Staff;
+import cn.edu.xmu.ultraci.hotelcheckin.server.po.StaffPO;
 
 /**
  * 员工表DAO实现类
@@ -20,22 +21,20 @@ public class StaffDaoImpl extends BaseDaoImpl implements IStaffDao {
 	private static Logger logger = LogManager.getLogger();
 
 	@Override
-	public boolean createStaff(Staff model) {
+	public long createStaff(StaffPO model) {
 		try {
-			if (super.executeUpdate(
+			return super.executeInsert(
 					"INSERT INTO tbl_staff(no, name, voiceprint, privilege, time) VALUES(?, ?, ?, ?, ?)",
 					model.getNo(), model.getName(), model.getVoiceprint(), model.getPrivilege(),
-					model.getTime()) > 0) {
-				return true;
-			}
+					model.getTime()).longValue();
 		} catch (SQLException e) {
-			logger.error("error while doing database operation.", e);
+			logger.error(LogTemplate.SQL_EXCP, e);
 		}
-		return false;
+		return -1;
 	}
 
 	@Override
-	public boolean updateStaff(Staff model) {
+	public boolean updateStaff(StaffPO model) {
 		try {
 			if (super.executeUpdate(
 					"UPDATE tbl_staff SET no = ?, name = ?, voiceprint = ?, privilege = ?, time = ? WHERE id = ? AND deleted = 0",
@@ -44,7 +43,7 @@ public class StaffDaoImpl extends BaseDaoImpl implements IStaffDao {
 				return true;
 			}
 		} catch (SQLException e) {
-			logger.error("error while doing database operation.", e);
+			logger.error(LogTemplate.SQL_EXCP, e);
 		}
 		return false;
 	}
@@ -57,40 +56,40 @@ public class StaffDaoImpl extends BaseDaoImpl implements IStaffDao {
 				return true;
 			}
 		} catch (SQLException e) {
-			logger.error("error while doing database operation.", e);
+			logger.error(LogTemplate.SQL_EXCP, e);
 		}
 		return false;
 	}
 
 	@Override
-	public List<Staff> retrieveAllStaff() {
+	public List<StaffPO> retrieveAllStaff() {
 		try {
-			return super.queryMultiRow(Staff.class, "SELECT * FROM tbl_staff WHERE deleted = 0",
+			return super.queryMultiRow(StaffPO.class, "SELECT * FROM tbl_staff WHERE deleted = 0",
 					(Object[]) null);
 		} catch (SQLException e) {
-			logger.error("error while doing database operation.", e);
+			logger.error(LogTemplate.SQL_EXCP, e);
 		}
 		return null;
 	}
 
 	@Override
-	public Staff retrieveStaffById(int id) {
+	public StaffPO retrieveStaffById(int id) {
 		try {
-			return super.querySingleRow(Staff.class,
+			return super.querySingleRow(StaffPO.class,
 					"SELECT * FROM tbl_staff WHERE id = ? AND deleted = 0", id);
 		} catch (SQLException e) {
-			logger.error("error while doing database operation.", e);
+			logger.error(LogTemplate.SQL_EXCP, e);
 		}
 		return null;
 	}
 
 	@Override
-	public Staff retrieveStaffByCardId(String cardId) {
+	public StaffPO retrieveStaffByCardId(String cardId) {
 		try {
-			return super.querySingleRow(Staff.class,
+			return super.querySingleRow(StaffPO.class,
 					"SELECT * FROM tbl_staff WHERE no = ? AND deleted = 0", cardId);
 		} catch (SQLException e) {
-			logger.error("error while doing database operation.", e);
+			logger.error(LogTemplate.SQL_EXCP, e);
 		}
 		return null;
 	}

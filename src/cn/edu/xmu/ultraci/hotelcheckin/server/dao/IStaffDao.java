@@ -2,7 +2,7 @@ package cn.edu.xmu.ultraci.hotelcheckin.server.dao;
 
 import java.util.List;
 
-import cn.edu.xmu.ultraci.hotelcheckin.server.po.Staff;
+import cn.edu.xmu.ultraci.hotelcheckin.server.po.StaffPO;
 
 /**
  * 员工表DAO操作接口
@@ -16,9 +16,9 @@ public interface IStaffDao extends IBaseDao {
 	 * 新增员工信息
 	 * 
 	 * @param model 要新增的内容
-	 * @return 操作结果
+	 * @return 插入行的自增长ID
 	 */
-	public boolean createStaff(Staff model);
+	public long createStaff(StaffPO model);
 
 	/**
 	 * 更新员工信息
@@ -26,7 +26,7 @@ public interface IStaffDao extends IBaseDao {
 	 * @param model 要更新的内容
 	 * @return 操作结果
 	 */
-	public boolean updateStaff(Staff model);
+	public boolean updateStaff(StaffPO model);
 
 	/**
 	 * 删除员工信息
@@ -41,7 +41,7 @@ public interface IStaffDao extends IBaseDao {
 	 * 
 	 * @return 查询结果
 	 */
-	public List<Staff> retrieveAllStaff();
+	public List<StaffPO> retrieveAllStaff();
 
 	/**
 	 * 根据ID查询员工信息
@@ -49,7 +49,7 @@ public interface IStaffDao extends IBaseDao {
 	 * @param id 要查询的ID
 	 * @return 查询结果
 	 */
-	public Staff retrieveStaffById(int id);
+	public StaffPO retrieveStaffById(int id);
 
 	/**
 	 * 根据员工卡号查询员工信息
@@ -57,5 +57,5 @@ public interface IStaffDao extends IBaseDao {
 	 * @param cardId 要查询的员工卡号
 	 * @return 查询结果
 	 */
-	public Staff retrieveStaffByCardId(String cardId);
+	public StaffPO retrieveStaffByCardId(String cardId);
 }
