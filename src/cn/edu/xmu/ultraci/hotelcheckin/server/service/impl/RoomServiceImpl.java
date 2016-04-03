@@ -29,18 +29,18 @@ public class RoomServiceImpl implements IRoomService {
 	private static Logger logger = LogManager.getLogger();
 
 	@Override
-	public GuestDTO newGuest(Map<String, String> params) {
+	public BaseDTO newGuest(Map<String, String> params) {
 		String device = params.get("device");
 		String mobile = params.get("mobile");
 		String idcard = params.get("idcard");
 		if (!StringUtil.isBlank(device) && !StringUtil.isBlank(mobile)
 				&& !StringUtil.isBlank(idcard)) {
 			IConfService confServ = (IConfService) BaseFactory.getInstance(IConfService.class);
-			String path = confServ.getConf("root") + "\\upload\\idcard\\" + idcard;
+			String path = confServ.getConf("root") + "upload\\idcard\\" + idcard;
 			if (new File(path).exists()) {
 				GuestPO guest = new GuestPO();
 				guest.setMobile(mobile);
-				guest.setIdcard(path);
+				guest.setIdcard(idcard);
 				IGuestDao guestDao = (IGuestDao) BaseFactory.getInstance(IGuestDao.class);
 				long guestId = guestDao.createGuest(guest);
 
@@ -50,16 +50,16 @@ public class RoomServiceImpl implements IRoomService {
 				return retModel;
 			} else {
 				logger.warn(String.format(LogTemplate.NEW_GUEST_FILE_NOT_FOUND, device, path));
-				return (GuestDTO) new BaseDTO(ErrorCode.NEW_GUEST_FILE_NOT_FOUND);
+				return new BaseDTO(ErrorCode.NEW_GUEST_FILE_NOT_FOUND);
 			}
 		} else {
-			logger.warn(String.format(LogTemplate.INVALID_REQ, params));
-			return (GuestDTO) new BaseDTO(ErrorCode.INVALID_REQ);
+			logger.warn(String.format(LogTemplate.INVALID_PARAMS, params));
+			return new BaseDTO(ErrorCode.INVALID_REQ);
 		}
 	}
 
 	@Override
-	public CheckinDTO checkIn(Map<String, String> params) {
+	public BaseDTO checkIn(Map<String, String> params) {
 		String device = params.get("device");
 		String customer = params.get("customer");
 		String room = params.get("room");
@@ -82,13 +82,13 @@ public class RoomServiceImpl implements IRoomService {
 			logger.info(String.format(LogTemplate.CHECK_IN_OK, device, room));
 			return new CheckinDTO();
 		} else {
-			logger.warn(String.format(LogTemplate.INVALID_REQ, params));
-			return (CheckinDTO) new BaseDTO(ErrorCode.INVALID_REQ);
+			logger.warn(String.format(LogTemplate.INVALID_PARAMS, params));
+			return new BaseDTO(ErrorCode.INVALID_REQ);
 		}
 	}
 
 	@Override
-	public CheckoutDTO checkOut(Map<String, String> params) {
+	public BaseDTO checkOut(Map<String, String> params) {
 		String device = params.get("device");
 		String cardid = params.get("cardid");
 		if (!StringUtil.isBlank(device) && !StringUtil.isBlank(cardid)) {
@@ -101,7 +101,7 @@ public class RoomServiceImpl implements IRoomService {
 				CheckinPO checkin = checkinDao.retrieveCheckinByRoom(room.getId());
 				if (checkin != null) {
 					// 执行退房
-					if (!TimeUtil.isDateAfter(checkin.getCheckout())) {
+					if (TimeUtil.isDateAfter(checkin.getCheckout())) {
 						checkin.setStay(0);
 						checkin.setCheckout(TimeUtil.formatTime(System.currentTimeMillis()));
 						checkinDao.updateCheckin(checkin);
@@ -110,19 +110,19 @@ public class RoomServiceImpl implements IRoomService {
 					} else {
 						// 超时需补交房款
 						logger.warn(String.format(LogTemplate.CHECK_OUT_NEED_PAY, device, cardid));
-						return (CheckoutDTO) new BaseDTO(ErrorCode.CHECK_OUT_NEED_PAY);
+						return new BaseDTO(ErrorCode.CHECK_OUT_NEED_PAY);
 					}
 				} else {
 					logger.warn(String.format(LogTemplate.CHECK_OUT_NO_CHECK_IN, device, cardid));
-					return (CheckoutDTO) new BaseDTO(ErrorCode.CHECK_OUT_NO_CHECK_IN);
+					return new BaseDTO(ErrorCode.CHECK_OUT_NO_CHECK_IN);
 				}
 			} else {
 				logger.warn(String.format(LogTemplate.CHECK_OUT_NO_SUCH_CARD, device, cardid));
-				return (CheckoutDTO) new BaseDTO(ErrorCode.CHECK_OUT_NO_SUCH_CARD);
+				return new BaseDTO(ErrorCode.CHECK_OUT_NO_SUCH_CARD);
 			}
 		} else {
-			logger.warn(String.format(LogTemplate.INVALID_REQ, params));
-			return (CheckoutDTO) new BaseDTO(ErrorCode.INVALID_REQ);
+			logger.warn(String.format(LogTemplate.INVALID_PARAMS, params));
+			return new BaseDTO(ErrorCode.INVALID_REQ);
 		}
 	}
 

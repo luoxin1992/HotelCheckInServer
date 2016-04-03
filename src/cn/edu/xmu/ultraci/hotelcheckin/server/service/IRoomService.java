@@ -2,9 +2,7 @@ package cn.edu.xmu.ultraci.hotelcheckin.server.service;
 
 import java.util.Map;
 
-import cn.edu.xmu.ultraci.hotelcheckin.server.dto.CheckinDTO;
-import cn.edu.xmu.ultraci.hotelcheckin.server.dto.CheckoutDTO;
-import cn.edu.xmu.ultraci.hotelcheckin.server.dto.GuestDTO;
+import cn.edu.xmu.ultraci.hotelcheckin.server.dto.BaseDTO;
 
 /**
  * 房务类服务接口<br>
@@ -20,7 +18,7 @@ public interface IRoomService {
 	 * @param params 参数集
 	 * @return 处理结果
 	 */
-	public GuestDTO newGuest(Map<String, String> params);
+	public BaseDTO newGuest(Map<String, String> params);
 
 	/**
 	 * 办理入住手续
@@ -28,7 +26,7 @@ public interface IRoomService {
 	 * @param params 参数集
 	 * @return 处理结果
 	 */
-	public CheckinDTO checkIn(Map<String, String> params);
+	public BaseDTO checkIn(Map<String, String> params);
 
 	/**
 	 * 办理退房手续
@@ -36,7 +34,7 @@ public interface IRoomService {
 	 * @param params 参数集
 	 * @return 处理结果
 	 */
-	public CheckoutDTO checkOut(Map<String, String> params);
+	public BaseDTO checkOut(Map<String, String> params);
 
 	/**
 	 * 查询支付结果<br>

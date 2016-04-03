@@ -47,7 +47,7 @@ public class RoomPO implements Serializable {
 	}
 
 	public void setName(String name) {
-		this.no = name;
+		this.name = name;
 	}
 
 	public Integer getFloor() {

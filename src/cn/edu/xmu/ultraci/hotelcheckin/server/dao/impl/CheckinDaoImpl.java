@@ -24,9 +24,9 @@ public class CheckinDaoImpl extends BaseDaoImpl implements ICheckinDao {
 	public long createCheckin(CheckinPO model) {
 		try {
 			return super.executeInsert(
-					"INSERT INTO tbl_checkin(room, member, guest, stay, checkin, checkout) VALUES(?, ?, ?, ?, ?, ?)",
-					model.getRoom(), model.getMember(), model.getGuest(), model.getStay(),
-					model.getCheckin(), model.getCheckout()).longValue();
+					"INSERT INTO tbl_checkin(room, member, guest, checkin, checkout) VALUES(?, ?, ?, ?, ?)",
+					model.getRoom(), model.getMember(), model.getGuest(), model.getCheckin(),
+					model.getCheckout()).longValue();
 		} catch (SQLException e) {
 			logger.error(LogTemplate.SQL_EXCP, e);
 		}

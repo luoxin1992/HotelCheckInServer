@@ -2,10 +2,7 @@ package cn.edu.xmu.ultraci.hotelcheckin.server.service;
 
 import java.util.Map;
 
-import cn.edu.xmu.ultraci.hotelcheckin.server.dto.HeartbeatDTO;
-import cn.edu.xmu.ultraci.hotelcheckin.server.dto.InitDTO;
-import cn.edu.xmu.ultraci.hotelcheckin.server.dto.LoginDTO;
-import cn.edu.xmu.ultraci.hotelcheckin.server.dto.LogoutDTO;
+import cn.edu.xmu.ultraci.hotelcheckin.server.dto.BaseDTO;
 
 /**
  * 系统类服务接口<br>
@@ -21,7 +18,7 @@ public interface ISystemService {
 	 * @param params 请求参数
 	 * @return 处理结果
 	 */
-	public HeartbeatDTO heartbeat(Map<String, String> params);
+	public BaseDTO heartbeat(Map<String, String> params);
 
 	/**
 	 * 处理初始化请求
@@ -29,7 +26,7 @@ public interface ISystemService {
 	 * @param params 请求参数
 	 * @return 处理结果
 	 */
-	public InitDTO init(Map<String, String> params);
+	public BaseDTO init(Map<String, String> params);
 
 	/**
 	 * 处理登录请求
@@ -37,7 +34,7 @@ public interface ISystemService {
 	 * @param params 请求参数
 	 * @return 处理结果
 	 */
-	public LoginDTO login(Map<String, String> params);
+	public BaseDTO login(Map<String, String> params);
 
 	/**
 	 * 处理登出请求
@@ -45,7 +42,7 @@ public interface ISystemService {
 	 * @param params 请求参数
 	 * @return 处理结果
 	 */
-	public LogoutDTO logout(Map<String, String> params);
+	public BaseDTO logout(Map<String, String> params);
 
 	/**
 	 * 处理声纹验证请求<br>

@@ -2,12 +2,7 @@ package cn.edu.xmu.ultraci.hotelcheckin.server.service;
 
 import java.util.Map;
 
-import cn.edu.xmu.ultraci.hotelcheckin.server.dto.FloorDTO;
-import cn.edu.xmu.ultraci.hotelcheckin.server.dto.InfoDTO;
-import cn.edu.xmu.ultraci.hotelcheckin.server.dto.MemberDTO;
-import cn.edu.xmu.ultraci.hotelcheckin.server.dto.RoomDTO;
-import cn.edu.xmu.ultraci.hotelcheckin.server.dto.StatusDTO;
-import cn.edu.xmu.ultraci.hotelcheckin.server.dto.TypeDTO;
+import cn.edu.xmu.ultraci.hotelcheckin.server.dto.BaseDTO;
 
 /**
  * 查询类服务接口<br>
@@ -23,7 +18,7 @@ public interface IQueryService {
 	 * @param params 参数集
 	 * @return 查询结果
 	 */
-	public MemberDTO queryMember(Map<String, String> params);
+	public BaseDTO queryMember(Map<String, String> params);
 
 	/**
 	 * 查询房型信息
@@ -31,7 +26,7 @@ public interface IQueryService {
 	 * @param params 参数集
 	 * @return 查询结果
 	 */
-	public TypeDTO queryType(Map<String, String> params);
+	public BaseDTO queryType(Map<String, String> params);
 
 	/**
 	 * 查询楼层信息
@@ -39,7 +34,7 @@ public interface IQueryService {
 	 * @param params 参数集
 	 * @return 查询结果
 	 */
-	public FloorDTO queryFloor(Map<String, String> params);
+	public BaseDTO queryFloor(Map<String, String> params);
 
 	/**
 	 * 查询房态信息
@@ -47,7 +42,7 @@ public interface IQueryService {
 	 * @param params 参数集
 	 * @return 查询结果
 	 */
-	public StatusDTO queryStatus(Map<String, String> params);
+	public BaseDTO queryStatus(Map<String, String> params);
 
 	/**
 	 * 查询房间信息
@@ -55,7 +50,7 @@ public interface IQueryService {
 	 * @param params 参数集
 	 * @return 查询结果
 	 */
-	public RoomDTO queryRoom(Map<String, String> params);
+	public BaseDTO queryRoom(Map<String, String> params);
 
 	/**
 	 * 查询其他信息
@@ -63,5 +58,5 @@ public interface IQueryService {
 	 * @param params 参数集
 	 * @return 查询结果
 	 */
-	public InfoDTO queryInfo(Map<String, String> params);
+	public BaseDTO queryInfo(Map<String, String> params);
 }

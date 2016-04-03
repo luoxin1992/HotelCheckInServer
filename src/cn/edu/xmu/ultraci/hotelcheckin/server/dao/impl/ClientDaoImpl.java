@@ -23,7 +23,7 @@ public class ClientDaoImpl extends BaseDaoImpl implements IClientDao {
 	@Override
 	public long createClient(ClientPO model) {
 		try {
-			return super.executeInsert("INSERT INTO tbl_client(device, heartbeat) VALUES(?, ?, ?)",
+			return super.executeInsert("INSERT INTO tbl_client(device, heartbeat) VALUES(?, ?)",
 					model.getDevice(), model.getHeartbeat()).longValue();
 		} catch (SQLException e) {
 			logger.error(LogTemplate.SQL_EXCP, e);

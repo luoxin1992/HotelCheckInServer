@@ -6,6 +6,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import cn.edu.xmu.ultraci.hotelcheckin.server.constant.LogTemplate;
 import cn.edu.xmu.ultraci.hotelcheckin.server.factory.BaseFactory;
 import cn.edu.xmu.ultraci.hotelcheckin.server.service.IAuthService;
 import cn.edu.xmu.ultraci.hotelcheckin.server.service.IConfService;
@@ -21,15 +22,15 @@ public class AuthServiceImpl implements IAuthService {
 		IConfService confServ = ((IConfService) BaseFactory.getInstance(IConfService.class));
 		String token = confServ.getConf("token");
 		if (StringUtil.isBlank(random)) {
-			logger.warn("invalid authentication parameter 'random'.");
+			logger.warn(String.format(LogTemplate.AUTH_INVAILD_PARAM, "ramdom"));
 			return false;
 		}
 		if (StringUtil.isBlank(signature)) {
-			logger.warn("invalid authentication parameter 'signature'.");
+			logger.warn(String.format(LogTemplate.AUTH_INVAILD_PARAM, "signature"));
 			return false;
 		}
 		if (StringUtil.isBlank(token)) {
-			logger.warn("authentication parameter 'token' not set.");
+			logger.warn(LogTemplate.AUTH_UNKNOWN_TOKEN);
 			return false;
 		}
 		// 排序和合并

@@ -23,4 +23,6 @@ public class ErrorCode {
 	public static final int CHECK_OUT_NO_SUCH_CARD = 40801;
 	public static final int CHECK_OUT_NO_CHECK_IN = 40802;
 	public static final int CHECK_OUT_NEED_PAY = 40803;
+	// 文件上传
+	public static final int FILE_UPLOAD_ERROR = 40901;
 }

@@ -28,7 +28,7 @@ import cn.edu.xmu.ultraci.hotelcheckin.server.util.StringUtil;
 import net.sf.json.JSONObject;
 
 /**
- * 客户端请求入口
+ * 客户端(大堂用)请求入口
  * 
  * @author LuoXin
  *
@@ -72,7 +72,6 @@ public class ClientServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		Map<String, String> params = ParamUtil.convertParams(request.getParameterMap());
-		System.out.println(params);
 		if (authServ.doAuth(params.get("random"), params.get("signature"))) {
 			// 鉴权成功，提供服务
 			String respJson = buildResponse(parseRequest(params));
@@ -133,7 +132,7 @@ public class ClientServlet extends HttpServlet {
 			// break;
 			}
 		}
-		logger.warn(String.format(LogTemplate.INVALID_REQ, params));
+		logger.warn(String.format(LogTemplate.INVALID_ACTION, params));
 		return new BaseDTO(ErrorCode.INVALID_REQ);
 	}
 

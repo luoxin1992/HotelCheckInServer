@@ -39,7 +39,7 @@ public class QueryServiceImpl implements IQueryService {
 	private static Logger logger = LogManager.getLogger();
 
 	@Override
-	public MemberDTO queryMember(Map<String, String> params) {
+	public BaseDTO queryMember(Map<String, String> params) {
 		String device = params.get("device");
 		String cardid = params.get("cardid");
 		if (!StringUtil.isBlank(device) && !StringUtil.isBlank(cardid)) {
@@ -49,25 +49,25 @@ public class QueryServiceImpl implements IQueryService {
 				MemberDTO relModel = new MemberDTO();
 				relModel.setId(member.getId());
 				// 返回会员信息时隐藏部分敏感信息
-				relModel.setName(StringUtil.shieldPartionStr(member.getName(), 1, 2));
+				relModel.setName(StringUtil.shieldPartionStr(member.getName(), 1, 1));
 				relModel.setIdcard(StringUtil.shieldPartionStr(member.getIdcard(), 6, 13));
 				relModel.setMobile(StringUtil.shieldPartionStr(member.getMobile(), 3, 6));
 				logger.info(String.format(LogTemplate.QUERY_MEMBER_OK, device, cardid));
 				return relModel;
 			} else {
 				logger.warn(String.format(LogTemplate.QUERY_MEMBER_NO_SUCH_CARD, device, cardid));
-				return (MemberDTO) new BaseDTO(ErrorCode.QUERY_MEMBER_NO_SUCH_CARD);
+				return new BaseDTO(ErrorCode.QUERY_MEMBER_NO_SUCH_CARD);
 			}
 		} else {
-			logger.warn(String.format(LogTemplate.INVALID_REQ, params));
-			return (MemberDTO) new BaseDTO(ErrorCode.INVALID_REQ);
+			logger.warn(String.format(LogTemplate.INVALID_PARAMS, params));
+			return new BaseDTO(ErrorCode.INVALID_REQ);
 		}
 	}
 
 	@Override
-	public TypeDTO queryType(Map<String, String> params) {
+	public BaseDTO queryType(Map<String, String> params) {
 		String device = params.get("device");
-		if (StringUtil.isBlank(device)) {
+		if (!StringUtil.isBlank(device)) {
 			TypeDTO retModel = new TypeDTO();
 			ITypeDao typeDao = (ITypeDao) BaseFactory.getInstance(ITypeDao.class);
 			List<TypePO> types = typeDao.retrieveAllType();
@@ -80,15 +80,15 @@ public class QueryServiceImpl implements IQueryService {
 			}
 			return retModel;
 		} else {
-			logger.warn(String.format(LogTemplate.INVALID_REQ, params));
-			return (TypeDTO) new BaseDTO(ErrorCode.INVALID_REQ);
+			logger.warn(String.format(LogTemplate.INVALID_PARAMS, params));
+			return new BaseDTO(ErrorCode.INVALID_REQ);
 		}
 	}
 
 	@Override
-	public FloorDTO queryFloor(Map<String, String> params) {
+	public BaseDTO queryFloor(Map<String, String> params) {
 		String device = params.get("device");
-		if (StringUtil.isBlank(device)) {
+		if (!StringUtil.isBlank(device)) {
 			FloorDTO retModel = new FloorDTO();
 			IFloorDao floorDao = (IFloorDao) BaseFactory.getInstance(IFloorDao.class);
 			List<FloorPO> floors = floorDao.retrieveAllFloor();
@@ -100,13 +100,13 @@ public class QueryServiceImpl implements IQueryService {
 			}
 			return retModel;
 		} else {
-			logger.warn(String.format(LogTemplate.INVALID_REQ, params));
-			return (FloorDTO) new BaseDTO(ErrorCode.INVALID_REQ);
+			logger.warn(String.format(LogTemplate.INVALID_PARAMS, params));
+			return new BaseDTO(ErrorCode.INVALID_REQ);
 		}
 	}
 
 	@Override
-	public StatusDTO queryStatus(Map<String, String> params) {
+	public BaseDTO queryStatus(Map<String, String> params) {
 		String device = params.get("device");
 		String floor = params.get("floor");
 		String type = params.get("type");
@@ -120,29 +120,29 @@ public class QueryServiceImpl implements IQueryService {
 				if (!floor.matches("\"\"||[\\d\\|]+") || !type.matches("\"\"||[\\d\\|]+")) {
 					logger.warn(String.format(LogTemplate.QUERY_STATUS_INVALID_FILTER, device,
 							floor, type));
-					return (StatusDTO) new BaseDTO(ErrorCode.QUERY_STATUS_INVALID_FILTER);
+					return new BaseDTO(ErrorCode.QUERY_STATUS_INVALID_FILTER);
 				}
 				// 分析过滤条件
-				List<Object> floorList = new ArrayList<Object>();
-				List<Object> typeList = new ArrayList<Object>();
+				List<Integer> floorList = new ArrayList<Integer>();
+				List<Integer> typeList = new ArrayList<Integer>();
 				StringTokenizer st = new StringTokenizer(floor, "\\|");
 				while (st.hasMoreTokens()) {
-					floorList.add(st.nextToken());
+					floorList.add(Integer.parseInt(st.nextToken()));
 				}
 				st = new StringTokenizer(type, "\\|");
 				while (st.hasMoreTokens()) {
-					typeList.add(st.nextToken());
+					typeList.add(Integer.parseInt(st.nextToken()));
 				}
 				// 分析在住情况
 				ICheckinDao checkinDao = (ICheckinDao) BaseFactory.getInstance(ICheckinDao.class);
 				List<Object> stayList = checkinDao.retrieveAllCheckinIdWithStayFlag();
 				// 筛选房间
 				for (RoomPO room : rooms) {
-					if (!floorList.contains(room.getFloor())) {
+					if (floorList.contains(room.getFloor())) {
 						// 不符合楼层过滤条件
 						retModel.addStatus(room.getId(), room.getName(), room.getFloor(),
 								room.getType(), 1);
-					} else if (!typeList.contains(room.getType())) {
+					} else if (typeList.contains(room.getType())) {
 						// 不符合房型过滤条件
 						retModel.addStatus(room.getId(), room.getName(), room.getFloor(),
 								room.getType(), 1);
@@ -160,13 +160,13 @@ public class QueryServiceImpl implements IQueryService {
 			}
 			return retModel;
 		} else {
-			logger.warn(String.format(LogTemplate.INVALID_REQ, params));
-			return (StatusDTO) new BaseDTO(ErrorCode.INVALID_REQ);
+			logger.warn(String.format(LogTemplate.INVALID_PARAMS, params));
+			return new BaseDTO(ErrorCode.INVALID_REQ);
 		}
 	}
 
 	@Override
-	public RoomDTO queryRoom(Map<String, String> params) {
+	public BaseDTO queryRoom(Map<String, String> params) {
 		String device = params.get("device");
 		String cardid = params.get("cardid");
 		if (!StringUtil.isBlank(device) && !StringUtil.isBlank(cardid)) {
@@ -178,11 +178,11 @@ public class QueryServiceImpl implements IQueryService {
 				retModel.setName(room.getName());
 			} else {
 				logger.warn(String.format(LogTemplate.QUERY_ROOM_NO_SUCH_CARD, device, cardid));
-				return (RoomDTO) new BaseDTO(ErrorCode.QUERY_ROOM_NO_SUCH_CARD);
+				return new BaseDTO(ErrorCode.QUERY_ROOM_NO_SUCH_CARD);
 			}
 			// 房型信息
 			ITypeDao typeDao = (ITypeDao) BaseFactory.getInstance(ITypeDao.class);
-			TypePO type = typeDao.retrieveTypeById(room.getId());
+			TypePO type = typeDao.retrieveTypeById(room.getType());
 			if (type != null) {
 				retModel.setType(type.getName());
 			}
@@ -193,8 +193,8 @@ public class QueryServiceImpl implements IQueryService {
 				retModel.setCheckin(checkin.getCheckin());
 				retModel.setCheckout(checkin.getCheckout());
 			} else {
-				logger.warn(String.format(LogTemplate.QUERY_ROOM_NO_CHECK_IN, params));
-				return (RoomDTO) new BaseDTO(ErrorCode.QUERY_ROOM_NO_CHECK_IN);
+				logger.warn(String.format(LogTemplate.QUERY_ROOM_NO_CHECK_IN, device, cardid));
+				return new BaseDTO(ErrorCode.QUERY_ROOM_NO_CHECK_IN);
 			}
 			// 入住者信息
 			if (checkin != null) {
@@ -211,13 +211,13 @@ public class QueryServiceImpl implements IQueryService {
 			logger.info(String.format(LogTemplate.QUERY_ROOM_OK, device, cardid));
 			return retModel;
 		} else {
-			logger.warn(String.format(LogTemplate.INVALID_REQ, params));
-			return (RoomDTO) new BaseDTO(ErrorCode.INVALID_REQ);
+			logger.warn(String.format(LogTemplate.INVALID_PARAMS, params));
+			return new BaseDTO(ErrorCode.INVALID_REQ);
 		}
 	}
 
 	@Override
-	public InfoDTO queryInfo(Map<String, String> params) {
+	public BaseDTO queryInfo(Map<String, String> params) {
 		String device = params.get("device");
 		String type = params.get("type");
 		if (!StringUtil.isBlank(device) && !StringUtil.isBlank(type)) {
@@ -239,11 +239,11 @@ public class QueryServiceImpl implements IQueryService {
 				return retModel;
 			default:
 				logger.warn(String.format(LogTemplate.QUERY_INFO_NO_SUCH_TYPE, device, type));
-				return (InfoDTO) new BaseDTO(ErrorCode.QUERY_INFO_NO_SUCH_TYPE);
+				return new BaseDTO(ErrorCode.QUERY_INFO_NO_SUCH_TYPE);
 			}
 		} else {
-			logger.warn(String.format(LogTemplate.INVALID_REQ, params));
-			return (InfoDTO) new BaseDTO(ErrorCode.INVALID_REQ);
+			logger.warn(String.format(LogTemplate.INVALID_PARAMS, params));
+			return new BaseDTO(ErrorCode.INVALID_REQ);
 		}
 	}
 

@@ -1,7 +1,7 @@
 package cn.edu.xmu.ultraci.hotelcheckin.server.service.impl;
 
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Properties;
 
 import org.apache.logging.log4j.LogManager;
@@ -17,9 +17,11 @@ public class ConfServiceImpl implements IConfService {
 	private static Properties prop = new Properties();
 
 	static {
-		try (FileReader fr = new FileReader(
-				BaseFactory.class.getClassLoader().getResource("config.properties").getPath())) {
-			prop.load(fr);
+		// 不要直接打开文件，应载入IO流防中文乱码
+		try (InputStreamReader isr = new InputStreamReader(
+				BaseFactory.class.getClassLoader().getResourceAsStream("config.properties"),
+				"UTF-8")) {
+			prop.load(isr);
 		} catch (IOException e) {
 			logger.error(String.format(LogTemplate.IO_EXCP_PROP, "config.properties"), e);
 		}
