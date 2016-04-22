@@ -75,7 +75,8 @@ public class RoomServiceImpl implements IRoomService {
 			}
 			checkin.setRoom(Integer.parseInt(room));
 			checkin.setCheckin(TimeUtil.formatTime(System.currentTimeMillis()));
-			checkin.setCheckout(time);
+			// 假定退房时间为每天中午12点前
+			checkin.setCheckout(time + " 12:00:00");
 
 			ICheckinDao checkinDao = (ICheckinDao) BaseFactory.getInstance(ICheckinDao.class);
 			checkinDao.createCheckin(checkin);

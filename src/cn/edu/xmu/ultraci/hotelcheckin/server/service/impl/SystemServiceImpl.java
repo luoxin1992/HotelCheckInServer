@@ -125,6 +125,7 @@ public class SystemServiceImpl implements ISystemService {
 			if (staff != null) {
 				if (staff.getPrivilege() == 1) {
 					LoginDTO retModel = new LoginDTO();
+					retModel.setId(staff.getId());
 					retModel.setName(staff.getName());
 
 					logger.info(String.format(LogTemplate.LOGIN_OK, device, cardid));
@@ -152,6 +153,7 @@ public class SystemServiceImpl implements ISystemService {
 			if (staff != null) {
 				if (staff.getPrivilege() == 1) {
 					LogoutDTO retModel = new LogoutDTO();
+					retModel.setId(staff.getId());
 					retModel.setName(staff.getName());
 
 					logger.info(String.format(LogTemplate.LOGOUT_OK, device, cardid));

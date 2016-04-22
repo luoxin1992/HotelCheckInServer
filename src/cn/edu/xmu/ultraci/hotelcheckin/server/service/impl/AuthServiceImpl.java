@@ -22,7 +22,7 @@ public class AuthServiceImpl implements IAuthService {
 		IConfService confServ = ((IConfService) BaseFactory.getInstance(IConfService.class));
 		String token = confServ.getConf("token");
 		if (StringUtil.isBlank(random)) {
-			logger.warn(String.format(LogTemplate.AUTH_INVAILD_PARAM, "ramdom"));
+			logger.warn(String.format(LogTemplate.AUTH_INVAILD_PARAM, "random"));
 			return false;
 		}
 		if (StringUtil.isBlank(signature)) {
@@ -41,7 +41,7 @@ public class AuthServiceImpl implements IAuthService {
 			sb.append(array[i]);
 		}
 		// 与加密签名相比较
-		return DigestUtils.sha1Hex(sb.toString()).equals(signature);
+		return DigestUtils.sha1Hex(sb.toString()).equalsIgnoreCase(signature);
 	}
 
 }

@@ -26,15 +26,15 @@ public class TimeUtil {
 	}
 
 	/**
-	 * 判断两个日期的前后关系<br>
-	 * 在zh_CN环境下日期格式应为YYYY-MM-DD
+	 * 判断两个时间的前后关系<br>
+	 * 在zh_CN环境下日期格式应为YYYY-MM-DD HH:MM:SS
 	 * 
 	 * @param date1 日期字符串1
 	 * @param date2 日期字符串2
 	 * @return 比较结果
 	 */
 	public static boolean isDateAfter(String date1, String date2) {
-		DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM);
+		DateFormat df = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM);
 		try {
 			return df.parse(date1).after(df.parse(date2));
 		} catch (ParseException e) {
@@ -44,14 +44,14 @@ public class TimeUtil {
 	}
 
 	/**
-	 * 判断指定日期与当前时间的前后关系<br>
-	 * 在zh_CN环境下日期格式应为YYYY-MM-DD
+	 * 判断指定时间与当前时间的前后关系<br>
+	 * 在zh_CN环境下日期格式应为YYYY-MM-DD HH:MM:SS
 	 * 
 	 * @param date 日期字符串
 	 * @return 比较结果
 	 */
 	public static boolean isDateAfter(String date) {
-		DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM);
+		DateFormat df = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM);
 		try {
 			return df.parse(date).after(new Date());
 		} catch (ParseException e) {

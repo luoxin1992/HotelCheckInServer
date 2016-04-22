@@ -138,11 +138,11 @@ public class QueryServiceImpl implements IQueryService {
 				List<Object> stayList = checkinDao.retrieveAllCheckinIdWithStayFlag();
 				// 筛选房间
 				for (RoomPO room : rooms) {
-					if (floorList.contains(room.getFloor())) {
+					if (!floorList.contains(room.getFloor())) {
 						// 不符合楼层过滤条件
 						retModel.addStatus(room.getId(), room.getName(), room.getFloor(),
 								room.getType(), 1);
-					} else if (typeList.contains(room.getType())) {
+					} else if (!typeList.contains(room.getType())) {
 						// 不符合房型过滤条件
 						retModel.addStatus(room.getId(), room.getName(), room.getFloor(),
 								room.getType(), 1);
@@ -175,6 +175,7 @@ public class QueryServiceImpl implements IQueryService {
 			IRoomDao roomDao = (IRoomDao) BaseFactory.getInstance(IRoomDao.class);
 			RoomPO room = roomDao.retrieveRoomByCardId(cardid);
 			if (room != null) {
+				retModel.setId(room.getId());
 				retModel.setName(room.getName());
 			} else {
 				logger.warn(String.format(LogTemplate.QUERY_ROOM_NO_SUCH_CARD, device, cardid));
