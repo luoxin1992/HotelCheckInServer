@@ -18,6 +18,7 @@ public class Action {
 	// 房务类
 	public static final String NEW_GUEST = "guest";
 	public static final String CHECK_IN = "checkin";
+	public static final String EXTENSION = "extension";
 	public static final String CHECK_OUT = "checkout";
 	@Deprecated
 	public static final String PAY_RESULT = "pay";

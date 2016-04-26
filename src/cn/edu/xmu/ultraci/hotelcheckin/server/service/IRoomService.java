@@ -18,7 +18,7 @@ public interface IRoomService {
 	 * @param params 参数集
 	 * @return 处理结果
 	 */
-	public BaseDTO newGuest(Map<String, String> params);
+	public BaseDTO guest(Map<String, String> params);
 
 	/**
 	 * 办理入住手续
@@ -26,7 +26,15 @@ public interface IRoomService {
 	 * @param params 参数集
 	 * @return 处理结果
 	 */
-	public BaseDTO checkIn(Map<String, String> params);
+	public BaseDTO checkin(Map<String, String> params);
+
+	/**
+	 * 办理续住手续
+	 * 
+	 * @param params 参数集
+	 * @return 处理结果
+	 */
+	public BaseDTO extension(Map<String, String> params);
 
 	/**
 	 * 办理退房手续
@@ -34,7 +42,7 @@ public interface IRoomService {
 	 * @param params 参数集
 	 * @return 处理结果
 	 */
-	public BaseDTO checkOut(Map<String, String> params);
+	public BaseDTO checkout(Map<String, String> params);
 
 	/**
 	 * 查询支付结果<br>

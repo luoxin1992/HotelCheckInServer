@@ -93,7 +93,7 @@ public class SystemServiceImpl implements ISystemService {
 				retModel.getUpgrade().setMd5(upgradeMd5);
 			}
 			// 读客户端公告
-			retModel.setNotice(confServ.getConf("notice"));
+			retModel.setAnnouncement(confServ.getConf("announcement"));
 			// 读客户端广告
 			int adCount = Integer.parseInt(confServ.getConf("adcount"));
 			for (int i = 1; i <= adCount; i++) {
@@ -123,11 +123,10 @@ public class SystemServiceImpl implements ISystemService {
 			IStaffDao staffDao = (IStaffDao) BaseFactory.getInstance(IStaffDao.class);
 			StaffPO staff = staffDao.retrieveStaffByCardId(cardid);
 			if (staff != null) {
+				LoginDTO retModel = new LoginDTO();
+				retModel.setId(staff.getId());
+				retModel.setName(staff.getName());
 				if (staff.getPrivilege() == 1) {
-					LoginDTO retModel = new LoginDTO();
-					retModel.setId(staff.getId());
-					retModel.setName(staff.getName());
-
 					logger.info(String.format(LogTemplate.LOGIN_OK, device, cardid));
 					return retModel;
 				} else {
@@ -151,11 +150,10 @@ public class SystemServiceImpl implements ISystemService {
 			IStaffDao staffDao = (IStaffDao) BaseFactory.getInstance(IStaffDao.class);
 			StaffPO staff = staffDao.retrieveStaffByCardId(cardid);
 			if (staff != null) {
+				LogoutDTO retModel = new LogoutDTO();
+				retModel.setId(staff.getId());
+				retModel.setName(staff.getName());
 				if (staff.getPrivilege() == 1) {
-					LogoutDTO retModel = new LogoutDTO();
-					retModel.setId(staff.getId());
-					retModel.setName(staff.getName());
-
 					logger.info(String.format(LogTemplate.LOGOUT_OK, device, cardid));
 					return retModel;
 				} else {

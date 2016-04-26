@@ -123,11 +123,13 @@ public class ClientServlet extends HttpServlet {
 			case Action.QUERY_INFO:
 				return queryServ.queryInfo(params);
 			case Action.NEW_GUEST:
-				return roomServ.newGuest(params);
+				return roomServ.guest(params);
 			case Action.CHECK_IN:
-				return roomServ.checkIn(params);
+				return roomServ.checkin(params);
+			case Action.EXTENSION:
+				return roomServ.extension(params);
 			case Action.CHECK_OUT:
-				return roomServ.checkOut(params);
+				return roomServ.checkout(params);
 			// case Action.PAY_RESULT:
 			// break;
 			}

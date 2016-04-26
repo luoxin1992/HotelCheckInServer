@@ -1,6 +1,7 @@
 package cn.edu.xmu.ultraci.hotelcheckin.server.service.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -138,11 +139,11 @@ public class QueryServiceImpl implements IQueryService {
 				List<Object> stayList = checkinDao.retrieveAllCheckinIdWithStayFlag();
 				// 筛选房间
 				for (RoomPO room : rooms) {
-					if (!floorList.contains(room.getFloor())) {
+					if (floorList.size() != 0 && !floorList.contains(room.getFloor())) {
 						// 不符合楼层过滤条件
 						retModel.addStatus(room.getId(), room.getName(), room.getFloor(),
 								room.getType(), 1);
-					} else if (!typeList.contains(room.getType())) {
+					} else if (typeList.size() != 0 && !typeList.contains(room.getType())) {
 						// 不符合房型过滤条件
 						retModel.addStatus(room.getId(), room.getName(), room.getFloor(),
 								room.getType(), 1);
@@ -225,17 +226,14 @@ public class QueryServiceImpl implements IQueryService {
 			switch (type) {
 			case "basic":
 				IConfService confServ = (IConfService) BaseFactory.getInstance(IConfService.class);
-				StringBuffer sb = new StringBuffer();
-				sb.append(confServ.getConf("name"));
-				sb.append("\r\n");
-				sb.append("地址：");
-				sb.append(confServ.getConf("address"));
-				sb.append("\r\n");
-				sb.append("电话：");
-				sb.append(confServ.getConf("telephone"));
-				sb.append("\r\n");
+				Map<String, String> content = new HashMap<String, String>();
+				content.put("name", confServ.getConf("name"));
+				content.put("address", confServ.getConf("address"));
+				content.put("telephone", confServ.getConf("telephone"));
+				content.put("notice", confServ.getConf("notice"));
+
 				InfoDTO retModel = new InfoDTO();
-				retModel.setContent(sb.toString());
+				retModel.setContent(content);
 				logger.info(String.format(LogTemplate.QUERY_INFO_OK, device, type));
 				return retModel;
 			default:

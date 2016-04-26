@@ -36,6 +36,7 @@ public class LogTemplate {
 	public static final String NEW_GUEST_OK = "client %s upload guest with id %s success.";
 	public static final String NEW_GUEST_FILE_NOT_FOUND = "client %s upload guest failure, idcard pic file %s not found.";
 	public static final String CHECK_IN_OK = "client %s check in of room %s success.";
+	public static final String EXTENSION_OK = "client %s extension of room %s success.";
 	public static final String CHECK_OUT_OK = "client %s check out of card %s success.";
 	public static final String CHECK_OUT_NO_SUCH_CARD = "client %s check out of card %s failure, card unregistered.";
 	public static final String CHECK_OUT_NO_CHECK_IN = "client %s check out of card %s failure, room no check in.";

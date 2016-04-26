@@ -14,6 +14,7 @@ import cn.edu.xmu.ultraci.hotelcheckin.server.dao.IRoomDao;
 import cn.edu.xmu.ultraci.hotelcheckin.server.dto.BaseDTO;
 import cn.edu.xmu.ultraci.hotelcheckin.server.dto.CheckinDTO;
 import cn.edu.xmu.ultraci.hotelcheckin.server.dto.CheckoutDTO;
+import cn.edu.xmu.ultraci.hotelcheckin.server.dto.ExtensionDTO;
 import cn.edu.xmu.ultraci.hotelcheckin.server.dto.GuestDTO;
 import cn.edu.xmu.ultraci.hotelcheckin.server.factory.BaseFactory;
 import cn.edu.xmu.ultraci.hotelcheckin.server.po.CheckinPO;
@@ -29,7 +30,7 @@ public class RoomServiceImpl implements IRoomService {
 	private static Logger logger = LogManager.getLogger();
 
 	@Override
-	public BaseDTO newGuest(Map<String, String> params) {
+	public BaseDTO guest(Map<String, String> params) {
 		String device = params.get("device");
 		String mobile = params.get("mobile");
 		String idcard = params.get("idcard");
@@ -45,7 +46,7 @@ public class RoomServiceImpl implements IRoomService {
 				long guestId = guestDao.createGuest(guest);
 
 				GuestDTO retModel = new GuestDTO();
-				retModel.setId(guestId);
+				retModel.setId((int) guestId);
 				logger.info(String.format(LogTemplate.NEW_GUEST_OK, device, guestId));
 				return retModel;
 			} else {
@@ -59,7 +60,7 @@ public class RoomServiceImpl implements IRoomService {
 	}
 
 	@Override
-	public BaseDTO checkIn(Map<String, String> params) {
+	public BaseDTO checkin(Map<String, String> params) {
 		String device = params.get("device");
 		String customer = params.get("customer");
 		String room = params.get("room");
@@ -75,13 +76,15 @@ public class RoomServiceImpl implements IRoomService {
 			}
 			checkin.setRoom(Integer.parseInt(room));
 			checkin.setCheckin(TimeUtil.formatTime(System.currentTimeMillis()));
-			// 假定退房时间为每天中午12点前
 			checkin.setCheckout(time + " 12:00:00");
 
 			ICheckinDao checkinDao = (ICheckinDao) BaseFactory.getInstance(ICheckinDao.class);
-			checkinDao.createCheckin(checkin);
+			long checkinId = checkinDao.createCheckin(checkin);
+
+			CheckinDTO retModel = new CheckinDTO();
+			retModel.setId((int) checkinId);
 			logger.info(String.format(LogTemplate.CHECK_IN_OK, device, room));
-			return new CheckinDTO();
+			return retModel;
 		} else {
 			logger.warn(String.format(LogTemplate.INVALID_PARAMS, params));
 			return new BaseDTO(ErrorCode.INVALID_REQ);
@@ -89,7 +92,28 @@ public class RoomServiceImpl implements IRoomService {
 	}
 
 	@Override
-	public BaseDTO checkOut(Map<String, String> params) {
+	public BaseDTO extension(Map<String, String> params) {
+		String device = params.get("device");
+		String room = params.get("room");
+		String time = params.get("time");
+		if (!StringUtil.isBlank(device) && !StringUtil.isBlank(room) && !StringUtil.isBlank(time)) {
+			ICheckinDao checkinDao = (ICheckinDao) BaseFactory.getInstance(ICheckinDao.class);
+			CheckinPO checkin = checkinDao.retrieveCheckinByRoom(Integer.parseInt(room));
+			checkin.setCheckout(time + " 12:00:00");
+			checkinDao.updateCheckin(checkin);
+
+			ExtensionDTO retModel = new ExtensionDTO();
+			retModel.setId(checkin.getId());
+			logger.info(String.format(LogTemplate.EXTENSION_OK, device, room));
+			return retModel;
+		} else {
+			logger.warn(String.format(LogTemplate.INVALID_PARAMS, params));
+			return new BaseDTO(ErrorCode.INVALID_REQ);
+		}
+	}
+
+	@Override
+	public BaseDTO checkout(Map<String, String> params) {
 		String device = params.get("device");
 		String cardid = params.get("cardid");
 		if (!StringUtil.isBlank(device) && !StringUtil.isBlank(cardid)) {
@@ -106,8 +130,11 @@ public class RoomServiceImpl implements IRoomService {
 						checkin.setStay(0);
 						checkin.setCheckout(TimeUtil.formatTime(System.currentTimeMillis()));
 						checkinDao.updateCheckin(checkin);
+
+						CheckoutDTO retModel = new CheckoutDTO();
+						retModel.setId(checkin.getId());
 						logger.info(String.format(LogTemplate.CHECK_OUT_OK, device, cardid));
-						return new CheckoutDTO();
+						return retModel;
 					} else {
 						// 超时需补交房款
 						logger.warn(String.format(LogTemplate.CHECK_OUT_NEED_PAY, device, cardid));

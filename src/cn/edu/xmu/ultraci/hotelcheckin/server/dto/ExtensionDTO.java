@@ -2,9 +2,8 @@ package cn.edu.xmu.ultraci.hotelcheckin.server.dto;
 
 import java.io.Serializable;
 
-public class CheckoutDTO extends BaseDTO implements Serializable {
-
-	private static final long serialVersionUID = -3078600975988585353L;
+public class ExtensionDTO extends BaseDTO implements Serializable {
+	private static final long serialVersionUID = -8155598990645353058L;
 
 	private Integer id;
 
