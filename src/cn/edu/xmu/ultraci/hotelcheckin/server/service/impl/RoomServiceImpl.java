@@ -76,7 +76,7 @@ public class RoomServiceImpl implements IRoomService {
 			}
 			checkin.setRoom(Integer.parseInt(room));
 			checkin.setCheckin(TimeUtil.formatTime(System.currentTimeMillis()));
-			checkin.setCheckout(time + " 12:00:00");
+			checkin.setCheckout(time);
 
 			ICheckinDao checkinDao = (ICheckinDao) BaseFactory.getInstance(ICheckinDao.class);
 			long checkinId = checkinDao.createCheckin(checkin);
@@ -99,7 +99,7 @@ public class RoomServiceImpl implements IRoomService {
 		if (!StringUtil.isBlank(device) && !StringUtil.isBlank(room) && !StringUtil.isBlank(time)) {
 			ICheckinDao checkinDao = (ICheckinDao) BaseFactory.getInstance(ICheckinDao.class);
 			CheckinPO checkin = checkinDao.retrieveCheckinByRoom(Integer.parseInt(room));
-			checkin.setCheckout(time + " 12:00:00");
+			checkin.setCheckout(time);
 			checkinDao.updateCheckin(checkin);
 
 			ExtensionDTO retModel = new ExtensionDTO();

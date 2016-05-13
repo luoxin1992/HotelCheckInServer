@@ -187,16 +187,18 @@ public class QueryServiceImpl implements IQueryService {
 			TypePO type = typeDao.retrieveTypeById(room.getType());
 			if (type != null) {
 				retModel.setType(type.getName());
+				retModel.setPrice(type.getPrice());
 			}
 			// 入住信息
 			ICheckinDao checkinDao = (ICheckinDao) BaseFactory.getInstance(ICheckinDao.class);
 			CheckinPO checkin = checkinDao.retrieveCheckinByRoom(room.getId());
 			if (checkin != null) {
-				retModel.setCheckin(checkin.getCheckin());
-				retModel.setCheckout(checkin.getCheckout());
+				retModel.setCheckin(checkin.getCheckin().split(" ")[0]);
+				retModel.setCheckout(checkin.getCheckout().split(" ")[0]);
 			} else {
 				logger.warn(String.format(LogTemplate.QUERY_ROOM_NO_CHECK_IN, device, cardid));
-				return new BaseDTO(ErrorCode.QUERY_ROOM_NO_CHECK_IN);
+				retModel.setResult(ErrorCode.QUERY_ROOM_NO_CHECK_IN);
+				return retModel;
 			}
 			// 入住者信息
 			if (checkin != null) {

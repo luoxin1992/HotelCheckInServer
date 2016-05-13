@@ -23,7 +23,7 @@ import org.apache.logging.log4j.Logger;
 import cn.edu.xmu.ultraci.hotelcheckin.server.constant.ErrorCode;
 import cn.edu.xmu.ultraci.hotelcheckin.server.constant.LogTemplate;
 import cn.edu.xmu.ultraci.hotelcheckin.server.dto.BaseDTO;
-import cn.edu.xmu.ultraci.hotelcheckin.server.dto.FileuploadDTO;
+import cn.edu.xmu.ultraci.hotelcheckin.server.dto.FileUploadDTO;
 import cn.edu.xmu.ultraci.hotelcheckin.server.factory.BaseFactory;
 import cn.edu.xmu.ultraci.hotelcheckin.server.service.IAuthService;
 import cn.edu.xmu.ultraci.hotelcheckin.server.util.StringUtil;
@@ -111,7 +111,7 @@ public class FileUploadServlet extends HttpServlet {
 					} catch (Exception e) {
 						logger.error(LogTemplate.UPLOAD_EXCP, e);
 					}
-					FileuploadDTO retModel = new FileuploadDTO();
+					FileUploadDTO retModel = new FileUploadDTO();
 					retModel.setFilename(fileName);
 					logger.info(String.format(LogTemplate.FILE_UPLOAD, device, fileName, type));
 					return retModel;
