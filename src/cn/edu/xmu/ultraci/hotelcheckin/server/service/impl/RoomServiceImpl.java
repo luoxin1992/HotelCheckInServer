@@ -126,20 +126,22 @@ public class RoomServiceImpl implements IRoomService {
 				CheckinPO checkin = checkinDao.retrieveCheckinByRoom(room.getId());
 				if (checkin != null) {
 					// 执行退房
-					if (TimeUtil.isDateAfter(checkin.getCheckout())) {
-						checkin.setStay(0);
-						checkin.setCheckout(TimeUtil.formatTime(System.currentTimeMillis()));
-						checkinDao.updateCheckin(checkin);
+					// 是否超时在客户端判断？
+					// if (TimeUtil.isDateAfter(checkin.getCheckout())) {
+					checkin.setStay(0);
+					checkin.setCheckout(TimeUtil.formatTime(System.currentTimeMillis()));
+					checkinDao.updateCheckin(checkin);
 
-						CheckoutDTO retModel = new CheckoutDTO();
-						retModel.setId(checkin.getId());
-						logger.info(String.format(LogTemplate.CHECK_OUT_OK, device, cardid));
-						return retModel;
-					} else {
-						// 超时需补交房款
-						logger.warn(String.format(LogTemplate.CHECK_OUT_NEED_PAY, device, cardid));
-						return new BaseDTO(ErrorCode.CHECK_OUT_NEED_PAY);
-					}
+					CheckoutDTO retModel = new CheckoutDTO();
+					retModel.setId(checkin.getId());
+					logger.info(String.format(LogTemplate.CHECK_OUT_OK, device, cardid));
+					return retModel;
+					// } else {
+					// 超时需补交房款
+					// logger.warn(String.format(LogTemplate.CHECK_OUT_NEED_PAY,
+					// device, cardid));
+					// return new BaseDTO(ErrorCode.CHECK_OUT_NEED_PAY);
+					// }
 				} else {
 					logger.warn(String.format(LogTemplate.CHECK_OUT_NO_CHECK_IN, device, cardid));
 					return new BaseDTO(ErrorCode.CHECK_OUT_NO_CHECK_IN);

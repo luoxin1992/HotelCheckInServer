@@ -49,8 +49,8 @@ public class QueryServiceImpl implements IQueryService {
 			if (member != null) {
 				MemberDTO relModel = new MemberDTO();
 				relModel.setId(member.getId());
+				relModel.setName(member.getName());
 				// 返回会员信息时隐藏部分敏感信息
-				relModel.setName(StringUtil.shieldPartionStr(member.getName(), 1, 1));
 				relModel.setIdcard(StringUtil.shieldPartionStr(member.getIdcard(), 6, 13));
 				relModel.setMobile(StringUtil.shieldPartionStr(member.getMobile(), 3, 6));
 				logger.info(String.format(LogTemplate.QUERY_MEMBER_OK, device, cardid));

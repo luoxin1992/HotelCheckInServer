@@ -98,7 +98,7 @@ public class CheckinDaoImpl extends BaseDaoImpl implements ICheckinDao {
 	public List<Object> retrieveAllCheckinIdWithStayFlag() {
 		try {
 			return super.queryMultiColumn(
-					"SELECT id FROM tbl_checkin WHERE stay = 1 AND deleted = 0", (Object[]) null);
+					"SELECT room FROM tbl_checkin WHERE stay = 1 AND deleted = 0", (Object[]) null);
 		} catch (SQLException e) {
 			logger.error(LogTemplate.SQL_EXCP, e);
 		}
